@@ -29,7 +29,7 @@ if($u){
                 <div class="titulo">
                     <p>Iniciar sesión</p>
                 </div>
-               <a href="index.html"><img src="Assets/Images/Logo/image-removebg-preview.png" alt=""></a> 
+               <a href="index.html"><img src="../Assets/Images/Logo/image-removebg-preview.png" alt=""></a> 
             </div>
             <form action="../controllers/LoginController.php" method="post">
                 <div class="container-form">
