@@ -1,3 +1,14 @@
+<?php
+$msj = @$_REQUEST["msj"];
+$u = @$_SESSION["usuario.login"];
+$u = @unserialize($u);
+if($u){
+    header("Location: index.php");
+    exit;
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,13 +31,13 @@
                 </div>
                <a href="index.html"><img src="Assets/Images/Logo/image-removebg-preview.png" alt=""></a> 
             </div>
-            <form action="verificacion_inicioSesion.php" method="post">
+            <form action="../controllers/LoginController.php" method="post">
                 <div class="container-form">
                     <div class="register_camp">
                         <p>Ingrese los siguientes datos</p>
                             <input placeholder="Cedula" type="number" name="cc"> <br>
-                            <input placeholder="Contraseña" type="password" name="contra"> <br>
-                            <button type="submit"><img src="" alt="">Iniciar sesion</button>
+                            <input placeholder="Contraseña" type="password" name="pass"> <br>
+                            <button type="submit" value="Login" name="accion" id="accion"><img src="" alt="">Iniciar sesion</button>
                             <a href="registrar_usuario.html"><button type="button">Registrarse</button></a>
                     </div>
                 </div>
