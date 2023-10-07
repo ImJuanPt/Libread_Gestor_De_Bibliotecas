@@ -1,19 +1,25 @@
 <?php
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Usuario.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/library/config.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Anuncio.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/lib/config.php";
+
 $msj = @$_REQUEST["msj"];
 $u = @$_SESSION["usuario.login"];
 $u = @unserialize($u);
 
+$anunc = new Anuncio();
+$anuncios = Anuncio::find('all', array(
+    'joins' => array('INNER JOIN libros ON anuncios.id_libro = libros.id_libro'),
+    'select' => 'anuncios.*, libros.nombre, libros.img_portada',
+    'order' => 'anuncios.id_libro DESC',
+    'limit' => 3
+  ));
 
-$datos = Model::select('anuncios.*', 'libros.nombre', 'libros.img_portada')
-    ->from('anuncios')
-    ->join('libros', 'anuncios.id_libro', '=', 'libros.id_libro')
-    ->orderBy('anuncios.id_libro', 'DESC')
-    ->limit(3)
-    ->get()
-    ->toArray();
+  $datos = array();
+  foreach ($anuncios as $anuncio) {
+      $datos[] = $anuncio->attributes();
+  }
 
 echo "
 <!DOCTYPE html>
@@ -37,36 +43,36 @@ echo "
         </div>
         <div class='container-nav'>
             <div class='nav'>
-            <form id = 'enviar_datos".$u->cedula."' action='profile.php' method='post'>
-                <input type='hidden' name='cc_usuario_sesion' value='".$u->cedula."'>
-                <a style='cursor: pointer' onclick='submitForm(\"enviar_datos".$u->cedula."\")'>
+            <form id = 'enviar_datos" . $u->cedula . "' action='profile.php' method='post'>
+                <input type='hidden' name='cc_usuario_sesion' value='" . $u->cedula . "'>
+                <a style='cursor: pointer' onclick='submitForm(\"enviar_datos" . $u->cedula . "\")'>
                     <img src='Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                     <p>Perfil</p> 
                 </a>
             </form>
             </div>
             <div class='nav'>
-                <form id = 'enviar_datos_libro".$u->cedula."' action='listado_libros.php' method='post'>
-                <input type='hidden' name='cc_usuario_sesion' value='".$u->cedula."'>
-                <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_libro".$u->cedula."\")'>
+                <form id = 'enviar_datos_libro" . $u->cedula . "' action='listado_libros.php' method='post'>
+                <input type='hidden' name='cc_usuario_sesion' value='" . $u->cedula . "'>
+                <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_libro" . $u->cedula . "\")'>
                     <img src='Assets/Images/Botones/libro.png' style = 'margin: auto;margin-left: 55%;'>
                     <p>Libros</p> 
                 </a>
             </form>
             </div>
             <div class='nav'>
-                <form id = 'enviar_datos_prestamo".$u->cedula."' action='prestamo.php' method='post'>
-                    <input type='hidden' name='cc_usuario_sesion' value='".$u->cedula."'>
-                    <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_prestamo".$u->cedula."\")'>
+                <form id = 'enviar_datos_prestamo" . $u->cedula . "' action='prestamo.php' method='post'>
+                    <input type='hidden' name='cc_usuario_sesion' value='" . $u->cedula . "'>
+                    <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_prestamo" . $u->cedula . "\")'>
                         <img src='Assets/Images/Botones/prestamo.png' style = 'margin: auto;margin-left: 55%;'>
                         <p>Prestamos</p> 
                     </a>
                 </form>
             </div>
             <div class='nav'>
-            <form id = 'enviar_datos_devolucion".$u->cedula."' action='devoluciones.php' method='post'>
-                <input type='hidden' name='cc_usuario_sesion' value='".$u->cedula."'>
-                <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_devolucion".$u->cedula."\")'>
+            <form id = 'enviar_datos_devolucion" . $u->cedula . "' action='devoluciones.php' method='post'>
+                <input type='hidden' name='cc_usuario_sesion' value='" . $u->cedula . "'>
+                <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_devolucion" . $u->cedula . "\")'>
                     <img src='Assets/Images/Botones/devolucion.png' style = 'margin: auto;margin-left: 55%;'>
                     <p>Devoluciones</p> 
                 </a>
@@ -76,16 +82,16 @@ echo "
         </div>
     </div>
     <div class='home'>
-        <form id = 'enviar_datos_usuario".$u->cedula."' action='index.php' method='post'>
-            <input type='hidden' name='cc_usuario_sesion' value='".$u->cedula."'>
-            <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_usuario".$u->cedula."\")'>
+        <form id = 'enviar_datos_usuario" . $u->cedula . "' action='index.php' method='post'>
+            <input type='hidden' name='cc_usuario_sesion' value='" . $u->cedula . "'>
+            <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_usuario" . $u->cedula . "\")'>
                 <img src='Assets/Images/Botones/separador.png' style = 'margin: auto;margin-left: 55%;'>
             </a>
         </form>
     </div>
     <div class='welcome'>
         <div>
-            <p class='bienvenido'>Bienvenido ".$u->nombre."!</p>
+            <p class='bienvenido'>Bienvenido " . $u->nombre . "!</p>
             <p class='aventura'>¿Que aventura tendrás el día de hoy?</p>
         </div>
     </div>
@@ -93,25 +99,25 @@ echo "
 
         <div class='content_notices'>
             <div class='noticias'>
-                <p class='titulo'>". $datos[0]['tipo_anuncio']."</p>
-                <img src='".$datos[0]['img_portada']."' alt=''>
-                <p class='descripcion'> ".$datos[0]['descripcion']."</p>
+                <p class='titulo'>" . $datos[0]['tipo_anuncio'] . "</p>
+                <img src='" . $datos[0]['img_portada'] . "' alt=''>
+                <p class='descripcion'> " . $datos[0]['descripcion'] . "</p>
             </div>
         </div>
         <div class='notices2'>
             <div class='content_notices'>
                 <div class='noticias'>
-                    <p class='titulo'>". $datos[1]['tipo_anuncio']."</p>
-                    <img src='".$datos[1]['img_portada']."' alt=''>
-                    <p class='descripcion'> ".$datos[1]['descripcion']."</p>
+                    <p class='titulo'>" . $datos[1]['tipo_anuncio'] . "</p>
+                    <img src='" . $datos[1]['img_portada'] . "' alt=''>
+                    <p class='descripcion'> " . $datos[1]['descripcion'] . "</p>
                 </div>
             </div>
             <div class='notices3'>
                 <div class='content_notices'>
                     <div class='noticias'>
-                    <p class='titulo'>". $datos[2]['tipo_anuncio']."</p>
-                    <img src='".$datos[2]['img_portada']."' alt=''>
-                    <p class='descripcion'> ".$datos[2]['descripcion']."</p>
+                    <p class='titulo'>" . $datos[2]['tipo_anuncio'] . "</p>
+                    <img src='" . $datos[2]['img_portada'] . "' alt=''>
+                    <p class='descripcion'> " . $datos[2]['descripcion'] . "</p>
                     </div>
                 </div>
             </div>
@@ -119,4 +125,3 @@ echo "
 
 </html>
 ";
-?>
