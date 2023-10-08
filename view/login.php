@@ -1,11 +1,6 @@
 <?php
-$msj = @$_REQUEST["msj"];
-$u = @$_SESSION["usuario.login"];
-$u = @unserialize($u);
-if($u){
-    header("Location: index.php");
-    exit;
-}
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
+servicio_index::validate_login();
 ?>
 
 

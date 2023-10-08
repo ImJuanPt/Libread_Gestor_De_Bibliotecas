@@ -10,6 +10,9 @@ class LoginController{
             case "Login":
                 LoginController::login();
                 break;
+            case "Logout":
+                LoginController::Logout();
+                break;
             default:
                 header("Location:../view/error.php?msj=Accion no permitida");
                 exit;
@@ -28,7 +31,7 @@ class LoginController{
                 exit;
             }else{
                 $_SESSION["usuario.login"] = null;
-                header("Location:../view/login.php?msj=Password Incorrecto");
+                header("Location:../view/error.php?msj=Password Incorrecto");
                 exit;
             }
         }catch(Exception $error){
@@ -38,9 +41,15 @@ class LoginController{
                 $msj = "Ocurrio un error al Iniciar Sesion: ".$error->getMessage();
             }
             $_SESSION["usuario.find"] = NULL;
-            header("Location:../view/login.php?msj=$msj");
+            header("Location:../view/error.php?msj=$msj");
             exit;
         }
+    }
+
+    public static function logout(){
+        $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/login.php";
+        $_SESSION["usuario.login"] = null;
+        header("Location: $urlBase");
     }
 }
 LoginController::ejecutarAccion();
