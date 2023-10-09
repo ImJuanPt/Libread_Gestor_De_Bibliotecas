@@ -3,9 +3,10 @@ session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Usuario.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Anuncio.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 
 $msj = @$_REQUEST["msj"];
-$u = servicio_index::validate_login();
+$u = servicio_login::validate_login();
 $datos = servicio_index::lasts_anunces();
 
 
@@ -17,7 +18,7 @@ echo "
     <meta charset='UTF-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <link rel='stylesheet' href='login.css'>
+    <link rel='stylesheet' href='../Assets/Css/style_index.css'>
     <title>Libread</title>
     <script src='script.js'></script>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>

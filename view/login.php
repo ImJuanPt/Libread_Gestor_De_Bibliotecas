@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
-servicio_index::validate_login();
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
+servicio_login::validate_login();
 ?>
 
 
@@ -33,7 +33,7 @@ servicio_index::validate_login();
                             <input placeholder="Cedula" type="number" name="cc" required> <br>
                             <input placeholder="Contraseña" type="password" name="pass" required> <br>
                             <button type="submit" value="Login" name="accion" id="accion"><img src="" alt="">Iniciar sesion</button>
-                            <a href="registrar_usuario.html"><button type="button">Registrarse</button></a>
+                            <a href="register_user.html"><button type="button">Registrarse</button></a>
                     </div>
                 </div>
             </form>
