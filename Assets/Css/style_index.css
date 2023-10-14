@@ -18,7 +18,7 @@
 
 body{
     margin:0;
-    background-image: url(Assets/Images/Logo/fondo-abstracto-patrones-fisuras-uso-estilo-futurista-portada-negocios-banner_7505-1820.avif);
+    background-image: url(../Images/Logo/fondo-abstracto-patrones-fisuras-uso-estilo-futurista-portada-negocios-banner_7505-1820.avif);
 }
 
 
@@ -104,9 +104,7 @@ header img {
     left: 220px;
 }
 .content .logout2 button {
-    position: relative;
-    top: 60px;
-    left: 0px;
+    margin-top: 140px;
     background-color: tomato;
     border: none;
     cursor: pointer;

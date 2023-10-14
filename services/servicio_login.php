@@ -45,7 +45,7 @@ class servicio_login
             return $array_respuesta;
         } catch (Exception $error) {
             $array_respuesta[1] = false;
-            $array_respuesta[2] = "Hubo un error al intentar registrar el usuario: ". $error->getMessage();
+            $array_respuesta[2] = "Hubo un error al intentar registrar el usuario: " . $error->getMessage();
             return $array_respuesta;
         }
     }
@@ -66,5 +66,12 @@ class servicio_login
             header("Location: $urlBase");
             exit;
         }
+    }
+
+    public static function type_account()
+    {
+        $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php?msj=No tiene los permisos para acceder a esta pagina";
+        $u = servicio_login::validate_login();
+        return $u->tipo_usuario === "ADMIN" ? true :  header("Location: $urlBase");
     }
 }

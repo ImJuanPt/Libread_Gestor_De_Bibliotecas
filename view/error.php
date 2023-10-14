@@ -27,7 +27,7 @@ $msj = @$_REQUEST["msj"];
                 <div class="container-form">
                     <div class="register_camp">
                         <p><?= $msj ?></p>
-                        <a href="login.php"><button type="button">Volver</button></a>
+                        <a href="<?= $_SERVER['HTTP_REFERER'] ?> "><button type="button">Volver</button></a>
                     </div>
                 </div>
             </form>

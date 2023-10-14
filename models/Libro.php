@@ -9,7 +9,7 @@ class Libro extends ActiveRecord\Model{
         array("anuncios") // Un libro tiene muchos anuncios
     );
     public static $belongs_to = array(
-        array("autor") // Un autor pertence a un libro
+        array('autores', 'class_name' => 'Autor', 'foreign_key' => 'id_autor') // Un autor pertence a un libro
     );
 }
 ?>

@@ -9,7 +9,6 @@ $msj = @$_REQUEST["msj"];
 $u = servicio_login::validate_login();
 $datos = servicio_index::lasts_anunces();
 
-
 echo "
 <!DOCTYPE html>
 <html lang='en'>
@@ -28,14 +27,14 @@ echo "
 <body>
     <div class='content'>
         <div class='logo'>
-            <img src='assets/Images/Logo/image-removebg-preview.png'>
+            <img src='../assets/Images/Logo/image-removebg-preview.png'>
         </div>
         <div class='container-nav'>
             <div class='nav'>
             <form id = 'enviar_datos" . $u->cedula . "' action='profile.php' method='post'>
                 <input type='hidden' name='cc_usuario_sesion' value='" . $u->cedula . "'>
                 <a style='cursor: pointer' onclick='submitForm(\"enviar_datos" . $u->cedula . "\")'>
-                    <img src='Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
+                    <img src='../Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                     <p>Perfil</p> 
                 </a>
             </form>
@@ -44,7 +43,7 @@ echo "
                 <form id = 'enviar_datos_libro" . $u->cedula . "' action='listado_libros.php' method='post'>
                 <input type='hidden' name='cc_usuario_sesion' value='" . $u->cedula . "'>
                 <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_libro" . $u->cedula . "\")'>
-                    <img src='Assets/Images/Botones/libro.png' style = 'margin: auto;margin-left: 55%;'>
+                    <img src='../Assets/Images/Botones/libro.png' style = 'margin: auto;margin-left: 55%;'>
                     <p>Libros</p> 
                 </a>
             </form>
@@ -53,7 +52,7 @@ echo "
                 <form id = 'enviar_datos_prestamo" . $u->cedula . "' action='prestamo.php' method='post'>
                     <input type='hidden' name='cc_usuario_sesion' value='" . $u->cedula . "'>
                     <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_prestamo" . $u->cedula . "\")'>
-                        <img src='Assets/Images/Botones/prestamo.png' style = 'margin: auto;margin-left: 55%;'>
+                        <img src='../Assets/Images/Botones/prestamo.png' style = 'margin: auto;margin-left: 55%;'>
                         <p>Prestamos</p> 
                     </a>
                 </form>
@@ -62,19 +61,19 @@ echo "
             <form id = 'enviar_datos_devolucion" . $u->cedula . "' action='devoluciones.php' method='post'>
                 <input type='hidden' name='cc_usuario_sesion' value='" . $u->cedula . "'>
                 <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_devolucion" . $u->cedula . "\")'>
-                    <img src='Assets/Images/Botones/devolucion.png' style = 'margin: auto;margin-left: 55%;'>
+                    <img src='../Assets/Images/Botones/devolucion.png' style = 'margin: auto;margin-left: 55%;'>
                     <p>Devoluciones</p> 
                 </a>
             </form>
             </div>
-            <div class='logout'><a href = '../controllers/LoginController.php?accion=Logout'><button><img src='Assets/Images/Botones/salir.png' ></button><a></div>
+            <div class='logout'><a href = '../controllers/LoginController.php?accion=Logout'><button><img src='../Assets/Images/Botones/salir.png' ></button><a></div>
         </div>
     </div>
     <div class='home'>
         <form id = 'enviar_datos_usuario" . $u->cedula . "' action='index.php' method='post'>
             <input type='hidden' name='cc_usuario_sesion' value='" . $u->cedula . "'>
             <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_usuario" . $u->cedula . "\")'>
-                <img src='Assets/Images/Botones/separador.png' style = 'margin: auto;margin-left: 55%;'>
+                <img src='../Assets/Images/Botones/separador.png' style = 'margin: auto;margin-left: 55%;'>
             </a>
         </form>
     </div>
