@@ -35,6 +35,10 @@ class LoginController
             //metodo login returna un array, en la posicion 1 se guarda un boolean de si fue exitosa la operacion, en el 2 un mensaje de dicha operacion
             $answ = servicio_login::login($cedula, $clave);
             if ($answ[1]) {
+                if (servicio_login::type_account()) {
+                    header("Location:../view/view_admin/index_admin.php?msj=$answ[2]");
+                    exit;
+                }
                 header("Location:../view/index.php?msj=$answ[2]");
                 exit;
             } else {
@@ -72,18 +76,17 @@ class LoginController
             $u->correo = $correo;
             $u->nombre = $nombre;
             $answ = servicio_login::register($u);
-            if($answ[1]){
+            if ($answ[1]) {
                 header("Location:../view/index.php?msj=$answ[2]");
                 exit;
-            }else{
-                header("Location:../view/error.php?msj=".urldecode($answ[2]));
+            } else {
+                header("Location:../view/error.php?msj=" . urldecode($answ[2]));
                 exit;
             }
         } else {
-            header("Location:../view/error.php?msj=Debe llenar todos los campos para continuar".$cedula.$clave.$apellido1.$apellido2.$correo.$nombre);
+            header("Location:../view/error.php?msj=Debe llenar todos los campos para continuar" . $cedula . $clave . $apellido1 . $apellido2 . $correo . $nombre);
             exit;
         }
     }
 }
 LoginController::ejecutarAccion();
-?>

@@ -88,7 +88,7 @@ echo "
         <div class='content_notices'>
             <div class='noticias'>
                 <p class='titulo'>" . $datos[0]['tipo_anuncio'] . "</p>
-                <img src='" . $datos[0]['img_portada'] . "' alt=''>
+                <img src='../Assets/" . $datos[0]['img_portada'] . "' alt=''>
                 <p class='descripcion'> " . $datos[0]['descripcion'] . "</p>
             </div>
         </div>
@@ -96,7 +96,7 @@ echo "
             <div class='content_notices'>
                 <div class='noticias'>
                     <p class='titulo'>" . $datos[1]['tipo_anuncio'] . "</p>
-                    <img src='" . $datos[1]['img_portada'] . "' alt=''>
+                    <img src='../Assets/" . $datos[1]['img_portada'] . "' alt=''>
                     <p class='descripcion'> " . $datos[1]['descripcion'] . "</p>
                 </div>
             </div>
@@ -104,7 +104,7 @@ echo "
                 <div class='content_notices'>
                     <div class='noticias'>
                     <p class='titulo'>" . $datos[2]['tipo_anuncio'] . "</p>
-                    <img src='" . $datos[2]['img_portada'] . "' alt=''>
+                    <img src='../Assets/" . $datos[2]['img_portada'] . "' alt=''>
                     <p class='descripcion'> " . $datos[2]['descripcion'] . "</p>
                     </div>
                 </div>

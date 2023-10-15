@@ -1631,7 +1631,7 @@ class Model
 				$values = join(',', $values);
 
 			if ($expected == 1) {
-				throw new RecordNotFound("Couldn't find $class with ID=$values");
+				return false;
 			}
 
 			throw new RecordNotFound("Couldn't find all $class with IDs ($values) (found $results, but was looking for $expected)");

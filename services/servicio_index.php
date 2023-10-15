@@ -5,6 +5,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 
 class servicio_index
 {
+    //metodo para obtener los ultimos tres anuncios y retornarlos en un array
     public static function lasts_anunces()
     {
         $anuncios = Anuncio::find('all', array(

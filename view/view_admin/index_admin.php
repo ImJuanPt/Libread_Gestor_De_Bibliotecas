@@ -6,15 +6,11 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Libro.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
 
-$cc_usuario_sesion = servicio_login::validate_login();
-$cc_usuario_sesion = $cc_usuario_sesion->cedula;
+servicio_login::type_account();
 
-$result = Libro::find('all', array(
-    'joins' => array('autores'), // Cambiado 'INNER JOIN autores ON libros.id_autor = autores.id_autor' a 'autores'
-    'select' => 'libros.*, autores.nombre_autor, libros.img_portada',
-    'conditions' => 'estado_libro = "ACTIVO"', // Cambiado 'where' a 'conditions'
-));
+$result = servicio_admin::list_books();
 
 echo "
     <!DOCTYPE html>
@@ -75,9 +71,9 @@ echo "
             <div class='contenedor2'>";
 foreach ($result as $row_libro) {
     echo "  <div class='libro_content' id = 'datos'>
-                <form action='../../controllers/Index_adminController.php' method='POST'>
+                <form action='desc_libro.php' method='POST'>
                     <input type='hidden' name='id_libro' value='" . $row_libro->id_libro . "'>
-                    <p class='titulo' style='cursor: pointer' onclick='submitForm(\"form-libro-" . $row_libro->id_libro . "\")'>" . $row_libro->nombre . "</p>
+                    <p class='titulo' style='cursor: pointer' ><button type='submit'>" . $row_libro->nombre . "</button></p>
                     <img class='portada' src='../../Assets/" . $row_libro->img_portada . "' title='" . $row_libro->descripcion . "' style='width: 160px; height: 210px; cursor: pointer' onclick='submitForm(\"form-libro-" . $row_libro->id_libro . "\")'><br>
                     <p class='descripcion'>Descripcion: " . $row_libro->descripcion . "</p><br><br>
                     <p class='descripcion'> Autor: " . $row_libro->nombre_autor . "</p>

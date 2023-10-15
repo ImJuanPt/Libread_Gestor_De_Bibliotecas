@@ -7,6 +7,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 
+
 servicio_login::type_account();
 $u = servicio_login::validate_login();
 echo "
@@ -73,7 +74,6 @@ echo "
         <div class='user_info' >
             <form action='../../controllers/profile_editController.php' method='post'>
                 <p class='puntos' id ='user_info_edit'>". $u->puntaje."</p> 
-                <input type='hidden' name='cedula' value='".$u->cedula."'>
                 <p class='nombre' id='user_info_edit'><input  name = 'nombre' type = 'text' value ='". $u->nombre."'></p>
                 <p class='apellido' id='user_info_edit'><input  name = 'apellido1' type = 'text' value ='". $u->apellido_1."'</p>
                 <p class='apellido' id='user_info_edit'><input  name = 'apellido2' type = 'text' value ='". $u->apellido_2."'</p>
