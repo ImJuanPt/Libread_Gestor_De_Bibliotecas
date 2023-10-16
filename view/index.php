@@ -31,9 +31,7 @@ echo "
         </div>
         <div class='container-nav'>
             <div class='nav'>
-            <form id = 'enviar_datos" . $u->cedula . "' action='profile.php' method='post'>
-                <input type='hidden' name='cc_usuario_sesion' value='" . $u->cedula . "'>
-                <a style='cursor: pointer' onclick='submitForm(\"enviar_datos" . $u->cedula . "\")'>
+                    <a style='cursor: pointer' href = '../controllers/Index_userController?accion=Perfil'>>
                     <img src='../Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                     <p>Perfil</p> 
                 </a>
