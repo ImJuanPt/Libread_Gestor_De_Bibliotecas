@@ -6,19 +6,19 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Libro.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
-
+if(isset($_REQUEST["msj"])){
+    echo '<script>alert("Los datos han sido actualizados con éxito");</script>';
+}
 servicio_login::type_account();
-
-$result = servicio_admin::list_books();
-
+$u = servicio_login::validate_login();
 echo "
     <!DOCTYPE html>
     <html>
     <head>
         <meta charset='UTF-8'>
-        <title>Libros</title>
+        <title>Perfil</title>
         <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+        <script src='../../Assets/JS/script_pass.js'></script>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
         <link rel='stylesheet' href='../../Assets/Css/style_index.css'>
         <link rel='stylesheet' href='../../Assets/Css/style_libros.css'>
@@ -34,7 +34,7 @@ echo "
             </div>
             <div class='container-nav'>
                 <div class='nav'>
-                        <a href = '../../controllers/Index_adminController?accion=Perfil'>
+                        <a href = '../../controllers/LoginController?accion=Perfil'>
                             <img src='../../Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Perfil</p> 
                         </a>
@@ -55,40 +55,39 @@ echo "
             <div class='logout2'><a href = '../../controllers/LoginController?accion=Logout'><button><img src='../../Assets/Images/Botones/salir.png' ></button></a></div>
         </div>
     </div>
-    <div class='welcome'>
-        <div class = 'consulta'>
-                <form action='resultado_busqueda.php' method='post'>
-                    <input type='text' name='texto_busqueda'>
-                    <select name='opcion_busqueda'>
-                        <option value='nombre'>Nombre</option>
-                        <option value='nombre_autor'>Autor</option>
-                    </select>
-                    <button type='submit'>Buscar</button>
-                </form>
-            </div>
+    
+    <div class='content_profile'>
+        <div class='backgroundimage'> <img class='imagenperfil' src='../../Assets/Images/Botones/usuario.png'></div>
+        <p>Puntos:</p>
+        <p>Nombre:</p>
+        <p>Primer apellido:</p>
+        <p>Segundo apellido:</p>
+        <p>Cedula:</p>
+        <p>Correo:</p>
+        <p>Contraseña:</p>
+        <button id='ver_pass'; onclick='mostrar_contra();'><img class='ver_contra'
+        src='../../Assets/Images/Botones/ojo.png'></button>
+
+        <button id='ocultar_pass' onclick='quitar_contra();'> <img class='ver_contra' src='../../Assets/Images/Botones/ojos-cruzados.png'>
+        </button>
+                
+        <div class='user_info' >
+            <form action='../../controllers/profile_editController.php' method='post'>
+                <p class='puntos' id ='user_info_edit'>". $u->puntaje."</p> 
+                <p class='nombre' id='user_info_edit'>". $u->nombre."</p>
+                <p class='apellido' id='user_info_edit'>". $u->apellido_1."</p>
+                <p class='apellido' id='user_info_edit'>". $u->apellido_2."</p>
+                <p class='cedula' id='user_info_edit'>". $u->cedula."</p>
+                <p class='correo' id='user_info_edit'>". $u->correo."</p><br>
+                <p id='contraseña' >". $u->passw."</p>
+                <button value = 'profile' name = 'accion' type = 'submit' class=editar;> <img class='editar2' src='../../Assets/Images/Botones/lapiz-de-usuario.png'></button>
+            </form>
+        </div>
     </div>
 
-            <div class='contenedor2'>";
-foreach ($result as $row_libro) {
-    echo "  <div class='libro_content' id = 'datos'>
-                <form action='desc_libro.php' method='POST'>
-                    <input type='hidden' name='id_libro' value='" . $row_libro->id_libro . "'>
-                    <p class='titulo' style='cursor: pointer' ><button type='submit'>" . $row_libro->nombre . "</button></p>
-                    <img class='portada' src='../../Assets/" . $row_libro->img_portada . "' title='" . $row_libro->descripcion . "' style='width: 160px; height: 210px; cursor: pointer' onclick='submitForm(\"form-libro-" . $row_libro->id_libro . "\")'><br>
-                    <p class='descripcion'>Descripcion: " . $row_libro->descripcion . "</p><br><br>
-                    <p class='descripcion'> Autor: " . $row_libro->nombre_autor . "</p>
-                    <p class='descripcion'>Stock: " . $row_libro->stock . "</p>
-                </form>
-                
-                <form action='../../controllers/Index_adminController.php' method='POST' style='display: inline-block; margin-right: 15px; margin-left: 15px;'>
-                    <input type='hidden' name='id_libro' value='" . $row_libro->id_libro . "'>
-                    <button class='prestar'> <img src='../../Assets/Images/iconos/eliminar.png' title='Eliminar' type='submit' value='Eliminar' name='accion'></button>
-                    <button class='prestar'><img src='../../Assets/Images/iconos/editar.png' title='Editar' type='submit' value='Editar' name='accion')'></button>
-                    <button class='prestar'><img src='../../Assets/Images/iconos/generar_prestamo.png' title='Generar prestamo' type='submit' value='Generar_prestamo' name='accion'></button>
-                    <button class='prestar'><img src='../../Assets/Images/iconos/prestamos_libros.png' title='Generar entrega' type='submit' value='Generar_entrega' name='accion''></button>
-                </form>
-            </div>";
-}
-echo "</div>
-        </body>
-    </html>";
+    
+</body>
+
+</html>
+";
+?>

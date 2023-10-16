@@ -4,7 +4,8 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Prestamo.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 
-class Index_adminController
+
+class Index_userController
 {
 
     public static function ejecutarAccion()
@@ -12,7 +13,7 @@ class Index_adminController
         $accion = @$_REQUEST["accion"];
         switch ($accion) {
             case "Perfil":
-                Index_adminController::Perfil();
+                Index_userController::Perfil();
                 break;
             case "":
                 LoginController::register();
@@ -33,4 +34,4 @@ class Index_adminController
     }
 }
 
-Index_adminController::ejecutarAccion();
+Index_userController::ejecutarAccion();
