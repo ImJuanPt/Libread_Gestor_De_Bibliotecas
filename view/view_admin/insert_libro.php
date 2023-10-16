@@ -55,39 +55,44 @@ echo "
             <div class='logout2'><a href = '../../controllers/LoginController?accion=Logout'><button><img src='../../Assets/Images/Botones/salir.png' ></button></a></div>
         </div>
     </div>
-    
-    <div class='content_profile'>
-        <div class='backgroundimage'> <img class='imagenperfil' src='../../Assets/Images/Botones/usuario.png'></div>
-        <p>Puntos:</p>
-        <p>Nombre:</p>
-        <p>Primer apellido:</p>
-        <p>Segundo apellido:</p>
-        <p>Cedula:</p>
-        <p>Correo:</p>
-        <p>Contraseña:</p>
-        <button id='ver_pass'; onclick='mostrar_contra();'><img class='ver_contra'
-        src='../../Assets/Images/Botones/ojo.png'></button>
-
-        <button id='ocultar_pass' onclick='quitar_contra();'> <img class='ver_contra' src='../../Assets/Images/Botones/ojos-cruzados.png'>
-        </button>
-                
-        <div class='user_info' >
-            <form action='../../controllers/profile_editController.php' method='post'>
-                <p class='puntos' id ='user_info_edit'>". $u->puntaje."</p> 
-                <p class='nombre' id='user_info_edit'>". $u->nombre."</p>
-                <p class='apellido' id='user_info_edit'>". $u->apellido_1."</p>
-                <p class='apellido' id='user_info_edit'>". $u->apellido_2."</p>
-                <p class='cedula' id='user_info_edit'>". $u->cedula."</p>
-                <p class='correo' id='user_info_edit'>". $u->correo."</p><br>
-                <p id='contraseña' >". $u->passw."</p>
-                <button value = 'profile' name = 'accion' type = 'submit' class=editar;> <img class='editar2' src='../../Assets/Images/Botones/lapiz-de-usuario.png'></button>
-            </form>
-        </div>
-    </div>
-
-    
-</body>
-
+            <div class='contenedor'>";
+             echo "<div class='libro_content_insert' id = 'datos'>
+             <form action='admin_insertar_libro.php' method='post' enctype='multipart/form-data'>
+             <label class='labe' for='nombre'>Nombre</label>
+             <input class='labe' type='text' name='nombre' required>
+             <label class='labe' for='desc'>Descripcion</label>
+             <input class='labe' type='text' name='desc' required>
+             <label class='labe' for='autor'>Autor</label>
+             <input class='labe' type='text' name='autor' required>
+             <label class='labe' for='stock'>Stock</label>
+             <input class='labe' type='number' name='stock' required><br>
+             <label class='checkbx'>Seleccione uno o varios generos:</label>
+             <div class='contenedor_checkbox'>";
+                 $sql = 'SELECT * FROM generos';
+                 $result = $proc->ejecutar_qury($conn, $sql);
+                 $i = 0;
+                 while ($row = mysqli_fetch_assoc($result)) {
+                   if ($i % 5 == 0) {
+                     echo "<div class='columna_chck'>";
+                   }
+                   echo "<div><label style = 'cursor: pointer'><input class='checkbox' type='checkbox' name='generos[]' value='".$row['id_genero']."'>".$row['nombre_genero']."</label></div>";
+                   $i++;
+                   if ($i % 5 == 0) {
+                     echo '</div>';
+                   }
+                 }
+     echo"    </div>
+     </div>
+             <label class='labe' for='nombre'>Portada</label>
+             <img class='imagen_register' id='vista-previa' src='#' alt='Vista previa de imagen' style='display: none; width: 112px; margin-rigth: 100%;'><br>
+             <input type='file' name='imagen' id='imagen' accept='image/*' required>
+             <input type='hidden' name='cc_usuario_sesion' value='$cc_usuario_sesion'>
+             <button class='labe' id='btn_registrar' type='submit' class='btn btn-primary'>
+                 Registrar libro
+             </button>
+         </form>
+                    </div>";
+      echo "</div>
+        </body>
 </html>
 ";
-?>

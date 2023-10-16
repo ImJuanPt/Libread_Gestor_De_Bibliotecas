@@ -33,13 +33,13 @@ echo "
             </div>
             <div class='container-nav'>
                 <div class='nav'>
-                        <a href = '../../controllers/LoginController?accion=Perfil'>
+                        <a href = '../../controllers/Index_adminController.php?accion=Perfil'>
                             <img src='../../Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Perfil</p> 
                         </a>
                 </div>
                     <div class='nav'>
-                        <a href = '../../controllers/LoginController?accion=lista_libro'>
+                        <a href = '../../controllers/Index_adminController.php?accion=index_admin'>
                             <img src='../../Assets/Images/Botones/libro.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Libros</p> 
                         </a>

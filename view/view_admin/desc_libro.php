@@ -10,8 +10,7 @@
  require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
  
  servicio_login::type_account();
- $u = servicio_login::validate_login();
- $id_libro =  $_REQUEST["id_libro"];
+ $id_libro = isset($_REQUEST["id_libro"]) ? $_REQUEST["id_libro"] : "";
  $row_libro = servicio_admin::find_book($id_libro);
  $generos = servicio_admin::gender_book($id_libro);
  echo "
@@ -33,17 +32,17 @@
          <body>
          <div class='content'>
              <div class='logo'>
-                 <img src='../../assets/Images/Logo/image-removebg-preview.png'>
+                 <img src='../../Assets/Images/Logo/image-removebg-preview.png'>
              </div>
              <div class='container-nav'>
                  <div class='nav'>
-                         <a href = '../../controllers/LoginController?accion=Perfil'>
+                        <a href = '../../controllers/Index_adminController.php?accion=Perfil'>
                              <img src='../../Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                              <p>Perfil</p> 
-                         </a>
+                        </a>
                  </div>
                      <div class='nav'>
-                         <a href = '../../controllers/LoginController?accion=lista_libro'>
+                        <a href = '../../controllers/Index_adminController.php?accion=index_admin'>
                              <img src='../../Assets/Images/Botones/libro.png' style = 'margin: auto;margin-left: 55%;'>
                              <p>Libros</p> 
                          </a>
@@ -74,7 +73,7 @@
         <div class='contenedor3'>";
          echo "<div class='libro_content'>
                     <input type='hidden' name='id_libro' value='".$row_libro[0]->id_libro."'><p class='titulo'>".$row_libro[0]->nombre."</p>
-                            <img class='portada' src='../".$row_libro[0]->img_portada."' title='".$row_libro[0]->descripcion."' style='width: 160px; height: 210px;'><br>
+                            <img class='portada' src='../../Assets/".$row_libro[0]->img_portada."' title='".$row_libro[0]->descripcion."' style='width: 160px; height: 210px;'><br>
                             <p class='descripcion'>Descripcion: ".$row_libro[0]->descripcion."</p><br><br>
                             <p class='descripcion'> Autor: ".$row_libro[0]->nombre_autor."</p>
                             <p class='descripcion'>Stock: ".$row_libro[0]->stock."</p>

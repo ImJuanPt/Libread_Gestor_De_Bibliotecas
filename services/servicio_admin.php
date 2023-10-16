@@ -35,12 +35,28 @@ class servicio_admin
     //buscar los generos de un libro especifico(no funcionando)
     public static function gender_book($id)
     {
+        /*
         $row_genero = LibrosGenero::find('all', array(
             'joins' => array('generos'),
             'select' => 'libros.*, autores.nombre_autor, libros.img_portada',
             'conditions' => 'libros_generos.id_libro =' . $id . ';',
         ));
 
+        $generos = '';
+        foreach($row_genero as $row_genero){
+            if($generos===''){
+                $generos = $row_genero['nombre_genero'];
+            }else{
+                $generos = $generos.", ".$row_genero['nombre_genero'];
+            }
+        }
+        return $generos;
+        */
+
+        $row_genero = LibrosGenero::query("SELECT generos.nombre_genero 
+        FROM libros_generos 
+        INNER JOIN generos ON libros_generos.id_genero = generos.id_genero 
+        WHERE libros_generos.id_libro = '$id'");
         $generos = '';
         foreach($row_genero as $row_genero){
             if($generos===''){

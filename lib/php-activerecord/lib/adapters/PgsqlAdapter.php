@@ -115,6 +115,7 @@ SQL;
 
 	public function set_encoding($charset)
 	{
+		$charset = "utf8mb4";
 		$this->query("SET NAMES '$charset'");
 	}
 

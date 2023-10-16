@@ -14,11 +14,11 @@ class Index_adminController
             case "Perfil":
                 Index_adminController::Perfil();
                 break;
-            case "":
-                LoginController::register();
+            case "Perfil_edit":
+                Index_adminController::Perfil_edit();
                 break;
-            case "":
-                LoginController::Logout();
+            case "index_admin":
+                Index_adminController::index_admin();
                 break;
             default:
                 header("Location:../view/error.php?msj=Accion no permitida");
@@ -28,7 +28,17 @@ class Index_adminController
 
     public static function Perfil()
     {
+        $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/profile.php";
+        header("Location: $urlBase");
+    }
+    public static function Perfil_edit()
+    {
         $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/profile_editar.php";
+        header("Location: $urlBase");
+    }
+    public static function index_admin()
+    {
+        $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/index_admin.php";
         header("Location: $urlBase");
     }
 }
