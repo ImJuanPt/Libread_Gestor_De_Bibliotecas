@@ -22,7 +22,10 @@ class servicio_index
         return $datos;
     }
 
-    
-
-
+    public static function notify_msj($var)
+    {
+        if($var){
+        }
+        
+    }
 }

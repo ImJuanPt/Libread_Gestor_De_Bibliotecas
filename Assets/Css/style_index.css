@@ -168,7 +168,7 @@ header img {
 .notices .titulo{
     font-family: fuentesita;
     font-size: 30px;
-    position: absolute;
+    text-align: center;
     top: 9px;
     left: 55px;
 }
@@ -218,7 +218,7 @@ header img {
 }
 
 .logout{
-    margin-top: 40%;
+    margin-top: 30%;
 }
 .logout2{
     margin-top: 60%;

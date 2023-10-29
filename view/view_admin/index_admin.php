@@ -8,8 +8,11 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/service
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
 
+if(isset($_REQUEST["msj"])){
+    $msj = $_REQUEST["msj"];
+    echo '<script>alert("'.$msj.'");</script>';
+}
 servicio_login::type_account();
-
 $result = servicio_admin::list_books();
 
 echo "
@@ -46,7 +49,7 @@ echo "
                         </a>
                     </div>
                 <div class='nav'>
-                        <a href = '../../controllers/LoginController?accion=registrar_libro'>
+                        <a href = '../../controllers/Index_adminController?accion=registrar_libro'>
                             <img src='../../Assets/Images/Botones/prestamo.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Registrar libros</p> 
                         </a>
@@ -82,10 +85,10 @@ foreach ($result as $row_libro) {
                 
                 <form action='../../controllers/Index_adminController.php' method='POST' style='display: inline-block; margin-right: 15px; margin-left: 15px;'>
                     <input type='hidden' name='id_libro' value='" . $row_libro->id_libro . "'>
-                    <button class='prestar'> <img src='../../Assets/Images/iconos/eliminar.png' title='Eliminar' type='submit' value='Eliminar' name='accion'></button>
-                    <button class='prestar'><img src='../../Assets/Images/iconos/editar.png' title='Editar' type='submit' value='Editar' name='accion')'></button>
-                    <button class='prestar'><img src='../../Assets/Images/iconos/generar_prestamo.png' title='Generar prestamo' type='submit' value='Generar_prestamo' name='accion'></button>
-                    <button class='prestar'><img src='../../Assets/Images/iconos/prestamos_libros.png' title='Generar entrega' type='submit' value='Generar_entrega' name='accion''></button>
+                    <button class='prestar' title='Eliminar' type='submit' value='Eliminar' name='accion'> <img src='../../Assets/Images/iconos/eliminar.png'></button>
+                    <button class='prestar' title='Editar' type='submit' value='Editar' name='accion'><img src='../../Assets/Images/iconos/editar.png' ></button>
+                    <button class='prestar' title='Generar prestamo' type='submit' value='Generar_prestamo' name='accion'><img src='../../Assets/Images/iconos/generar_prestamo.png'></button>
+                    <button class='prestar' title='Generar entrega' type='submit' value='Generar_entrega name='accion'><img src='../../Assets/Images/iconos/prestamos_libros.png'></button>
                 </form>
             </div>";
 }

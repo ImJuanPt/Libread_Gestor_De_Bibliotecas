@@ -6,8 +6,10 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Libro.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
 if(isset($_REQUEST["msj"])){
-    echo '<script>alert("Los datos han sido actualizados con éxito");</script>';
+    $msj = $_REQUEST["msj"];
+    echo '<script>alert("'.$msj.'");</script>';
 }
 servicio_login::type_account();
 $u = servicio_login::validate_login();
@@ -17,8 +19,10 @@ echo "
     <head>
         <meta charset='UTF-8'>
         <title>Perfil</title>
+        <link rel='stylesheet' type='text/css' href='../../Assets/Css/style_insertLibro.css'>
         <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
         <script src='../../Assets/JS/script_pass.js'></script>
+        <script src='../../Assets/JS/script.js'></script>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
         <link rel='stylesheet' href='../../Assets/Css/style_index.css'>
         <link rel='stylesheet' href='../../Assets/Css/style_libros.css'>
@@ -57,7 +61,7 @@ echo "
     </div>
             <div class='contenedor'>";
              echo "<div class='libro_content_insert' id = 'datos'>
-             <form action='admin_insertar_libro.php' method='post' enctype='multipart/form-data'>
+             <form action='../../controllers/index_adminController.php' method='post' enctype='multipart/form-data'>
              <label class='labe' for='nombre'>Nombre</label>
              <input class='labe' type='text' name='nombre' required>
              <label class='labe' for='desc'>Descripcion</label>
@@ -68,14 +72,13 @@ echo "
              <input class='labe' type='number' name='stock' required><br>
              <label class='checkbx'>Seleccione uno o varios generos:</label>
              <div class='contenedor_checkbox'>";
-                 $sql = 'SELECT * FROM generos';
-                 $result = $proc->ejecutar_qury($conn, $sql);
                  $i = 0;
-                 while ($row = mysqli_fetch_assoc($result)) {
+                 $generos = servicio_admin::list_gender();
+                 foreach ($generos as $row) {
                    if ($i % 5 == 0) {
                      echo "<div class='columna_chck'>";
                    }
-                   echo "<div><label style = 'cursor: pointer'><input class='checkbox' type='checkbox' name='generos[]' value='".$row['id_genero']."'>".$row['nombre_genero']."</label></div>";
+                   echo "<div><label style = 'cursor: pointer'><input class='checkbox' type='checkbox' name='generos[]' value='".$row->id_genero."'>".$row->nombre_genero."</label></div>";
                    $i++;
                    if ($i % 5 == 0) {
                      echo '</div>';
@@ -86,8 +89,7 @@ echo "
              <label class='labe' for='nombre'>Portada</label>
              <img class='imagen_register' id='vista-previa' src='#' alt='Vista previa de imagen' style='display: none; width: 112px; margin-rigth: 100%;'><br>
              <input type='file' name='imagen' id='imagen' accept='image/*' required>
-             <input type='hidden' name='cc_usuario_sesion' value='$cc_usuario_sesion'>
-             <button class='labe' id='btn_registrar' type='submit' class='btn btn-primary'>
+             <button value = 'registrar_libro_insert' name = 'accion' class='labe' id='btn_registrar' type='submit' class='btn btn-primary'>
                  Registrar libro
              </button>
          </form>
