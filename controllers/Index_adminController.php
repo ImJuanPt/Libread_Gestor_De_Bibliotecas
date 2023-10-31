@@ -36,6 +36,15 @@ class Index_adminController
             case "Editar_insert":
                 Index_adminController::libro_Edit_insert();
                 break;
+            case "Solicitar_prestamo":
+                Index_adminController::solicitar_prestamo();
+                break;
+            case "validar_prestamo":
+                Index_adminController::validar_prestamo();
+                break;
+            case "confirmar_prestamo":
+                Index_adminController::confirmar_prestamo();
+                break;
             default:
                 header("Location:../view/error.php?msj=Accion no permitida");
                 exit;
@@ -46,22 +55,26 @@ class Index_adminController
     {
         $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/profile.php";
         header("Location: $urlBase");
+        exit;
     }
     public static function Perfil_edit()
     {
         $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/profile_editar.php";
         header("Location: $urlBase");
+        exit;
     }
     public static function index_admin()
     {
         $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/index_admin.php";
         header("Location: $urlBase");
+        exit;
     }
 
     public static function registrar_libro()
     {
         $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/insert_libro.php";
         header("Location: $urlBase");
+        exit;
     }
 
     public static function registrar_libro_insert()
@@ -144,7 +157,59 @@ class Index_adminController
             exit();
         }
     }
+    public static function solicitar_prestamo()
+    {
+        $id_libro = isset($_REQUEST["id_libro"]) ? $_REQUEST["id_libro"] : "";
+        if ($id_libro != "") {
+            if (servicio_admin::select_solic_prest_libro($id_libro)) {
+                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/view_prestamo/solicitar_prestamo.php";
+                header("Location: $urlBase");
+                exit();
+            } else {
+                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
+                header("Location: $urlBase?msj=No hay un libro seleccionado para realizar el prestamo");
+                exit();
+            }
+        } else {
+            $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
+            header("Location: $urlBase?msj=todos los campos deben estar llenos para continuar");
+            exit();
+        }
+    }
+    public static function validar_prestamo()
+    {
+        $id_usuario = isset($_REQUEST["cedula_solicitante"]) ? $_REQUEST["cedula_solicitante"] : "";
+        if ($id_usuario != "") {
+            if (servicio_admin::select_solic_prest_usuario($id_usuario)) {
+                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/view_prestamo/validar_prestamo.php";
+                header("Location: $urlBase");
+                exit();
+            } else {
+                $_SESSION['sesion.error'] = serialize("El usuario ingresado con cedula $id_usuario no existe");
+                $urlBase = $_SERVER['HTTP_REFERER'];
+                header("Location: $urlBase");
+                exit();
+            }
+        } else {
+            $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
+            header("Location: $urlBase?msj=todos los campos deben estar llenos para continuar");
+            exit();
+        }
+    }
 
+    public static function confirmar_prestamo()
+    {
+        $answ = servicio_admin::confirmar_prestamo();
+        if ($answ[0]) {
+            $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/index_admin.php";
+            header("Location: $urlBase?msj=$answ[1]");
+            exit;
+        }else{
+            $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
+            header("Location: $urlBase?msj=$answ[1]");
+            exit();
+        }
+    }
 }
 
 Index_adminController::ejecutarAccion();

@@ -29,7 +29,7 @@ class servicio_admin
             'conditions' => 'estado_libro = "ACTIVO" AND id_libro =' . $id . ';',
         ));
 
-        return $lib;
+        return $lib ? $lib : false;
     }
 
     public static function find_autor($id_autor)
@@ -241,14 +241,13 @@ class servicio_admin
 
             // Eliminar los géneros encontrados
             if (!empty($generos_a_eliminar)) {
-                foreach($generos_a_eliminar as $generos_delete){
+                foreach ($generos_a_eliminar as $generos_delete) {
                     $genero = LibrosGenero::find('all', array(
                         'select' => 'libros_generos.*',
                         'conditions' => 'id_libro = "' . $id_libro . '" AND id_genero =' . $generos_delete . ';'
                     ));
                     $genero[0]->delete();
                 }
-                
             }
             $array_respuesta[1] = true;
             $array_respuesta[2] = "Libro editado con exito. ";
@@ -257,5 +256,82 @@ class servicio_admin
             $array_respuesta[2] = "Hubo un error inesperado al registrar el libro. " + $e->getMessage();
         }
         return $array_respuesta;
+    }
+
+    public static function select_dates()
+    {
+        try {
+            $fechas = array();
+
+            $temp = Usuario::find_by_sql("SELECT DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') AS fecha;");
+            $fechas[0] = $temp[0]->fecha;
+
+            $temp = Usuario::find_by_sql("SELECT DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 3 DAY), '%Y-%m-%d %H:%i') AS fecha_3;");
+            $fechas[1] = $temp[0]->fecha_3;
+
+            return $fechas;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    public static function select_solic_prest_libro($id_libro)
+    {
+        $id_libro = Libro::find_by_pk($id_libro);
+        if ($id_libro) {
+            $id_libro = serialize($id_libro);
+            $_SESSION["prestamo.libro"] = $id_libro;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function select_solic_prest_usuario($id_usuario)
+    {
+        $id_usuario = Usuario::find_by_pk($id_usuario);
+        if ($id_usuario) {
+            $id_usuario = serialize($id_usuario);
+            $_SESSION["prestamo.usuario"] = $id_usuario;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function confirmar_prestamo()
+    {
+        try {
+            $user = unserialize($_SESSION['prestamo.usuario']);
+            $book = unserialize($_SESSION['prestamo.libro']);
+            $array_respuesta = array();
+            if ($user) {
+                if ($user->prestamos_activos < 5) {
+                    if ($user->puntaje > 0) {
+                        Prestamo::create([
+                            'id_libro' => $book->id_libro, 'cc_usuario' => $user->cedula
+                        ]);
+                        $user->prestamos_activos++;
+                        $user->save();
+                        $array_respuesta[0] = true;
+                        $array_respuesta[1] = "Presamo registrado con exito";
+                    } else {
+                        $array_respuesta[0] = false;
+                        $array_respuesta[1] = "El usuario ha sido penalizado por mal comportamiento, por tal motivo no se puede realizar el prestamo";
+                    }
+                } else {
+                    $array_respuesta[0] = false;
+                    $array_respuesta[1] = "El usuario ha alcanzado los prestamos maximos";
+                }
+            } else {
+                $array_respuesta[0] = false;
+                $array_respuesta[1] = "El usuario no existe en la base de datos";
+            }
+            return $array_respuesta;
+        } catch (Exception $e) {
+            $array_respuesta[0] = false;
+            $array_respuesta[1] = "Hubo un error inesperado: " . $e->getMessage();
+            return $array_respuesta;
+        }
     }
 }

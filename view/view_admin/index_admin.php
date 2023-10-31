@@ -87,7 +87,7 @@ foreach ($result as $row_libro) {
                     <input type='hidden' name='id_libro' value='" . $row_libro->id_libro . "'>
                     <button class='prestar' title='Eliminar' type='submit' value='Eliminar' name='accion'> <img src='../../Assets/Images/iconos/eliminar.png'></button>
                     <button class='prestar' title='Editar' type='submit' value='Editar' name='accion'><img src='../../Assets/Images/iconos/editar.png' ></button>
-                    <button class='prestar' title='Generar prestamo' type='submit' value='Generar_prestamo' name='accion'><img src='../../Assets/Images/iconos/generar_prestamo.png'></button>
+                    <button class='prestar' title='Generar prestamo' type='submit' value='Solicitar_prestamo' name='accion'><img src='../../Assets/Images/iconos/generar_prestamo.png'></button>
                     <button class='prestar' title='Generar entrega' type='submit' value='Generar_entrega name='accion'><img src='../../Assets/Images/iconos/prestamos_libros.png'></button>
                 </form>
             </div>";
