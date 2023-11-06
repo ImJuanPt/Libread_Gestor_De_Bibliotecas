@@ -7,17 +7,14 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
 
-if(isset($_REQUEST["msj"])){
-    $msj = $_REQUEST["msj"];
-    echo '<script>alert("'.$msj.'");</script>';
-}
 if(isset($_REQUEST["id_libro"])){
     $id = $_REQUEST["id_libro"];
     $book = servicio_admin::find_book($id);
     $autor = servicio_admin::find_autor($book[0]->id_autor);
 }
-servicio_login::type_account();
+verificacion_sesion_controller::redic_valid_login();
 $result = servicio_admin::list_books();
 
 echo "
@@ -110,3 +107,9 @@ echo "
         </body>
 </html>
 ";
+
+if(isset($_REQUEST["msj"])){
+    $msj = $_REQUEST["msj"];
+    echo '<script>alert("'.$msj.'");</script>';
+}
+

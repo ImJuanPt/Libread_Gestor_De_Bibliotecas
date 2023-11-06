@@ -5,6 +5,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
 if (isset($_SESSION["prestamo.libro"]) && isset($_SESSION["prestamo.usuario"])) {
     $libro = $_SESSION["prestamo.libro"];
     $usuario = $_SESSION["prestamo.usuario"];
@@ -16,8 +17,8 @@ if (isset($_SESSION["prestamo.libro"]) && isset($_SESSION["prestamo.usuario"])) 
     header("Location: $urlBase");
     exit;
 }
-servicio_login::type_account();
-$u = servicio_login::validate_login();
+verificacion_sesion_controller::redic_valid_login();
+$u = unserialize($_SESSION["usuario.login"]);
 echo "
     <!DOCTYPE html>
     <html>
@@ -55,7 +56,7 @@ echo "
                         </a>
                     </div>
                 <div class='nav'>
-                        <a href = '../../../controllers/LoginController?accion=registrar_libro'>
+                        <a href = '../../../controllers/Index_adminController.php?accion=registrar_libro'>
                             <img src='../../../Assets/Images/Botones/prestamo.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Registrar libros</p> 
                         </a>

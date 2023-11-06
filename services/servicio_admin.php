@@ -334,4 +334,57 @@ class servicio_admin
             return $array_respuesta;
         }
     }
+
+    public static function list_prest($id_libro)
+    {
+        $array_respuesta = array();
+        try {
+            $list = Prestamo::query("SELECT *,usuarios.nombre AS nombre_usuario, usuarios.cedula , libros.nombre AS nombre_libro, autores.nombre_autor FROM prestamos 
+            INNER JOIN libros ON prestamos.id_libro = libros.id_libro
+            INNER JOIN autores ON libros.id_autor = autores.id_autor
+            INNER JOIN usuarios ON prestamos.cc_usuario = usuarios.cedula
+            WHERE libros.id_libro = $id_libro");
+            $data = $list->fetchAll(PDO::FETCH_ASSOC);
+            if (!empty($list) || $list == null) {
+                $array_respuesta[0] = true;
+                $array_respuesta[1] = $data;
+                return $array_respuesta;
+            } else {
+                $array_respuesta[0] = false;
+                $array_respuesta[1] = "no sirve";
+                return $array_respuesta;
+            }
+        } catch (Exception $e) {
+            $array_respuesta[0] = false;
+            $array_respuesta[1] = "Hubo un error inesperado: " . $e->getMessage();
+            return $array_respuesta;
+        }
+    }
+
+    public static function confirm_entrega($id_prestamo)
+    {
+        $array_respuesta = array();
+        $prestamo = Prestamo::find_by_pk($id_prestamo);
+        if ($prestamo) {
+            $fecha_entrega = strtotime(date("d-m-Y H:i:00", time()));
+            $fecha_max_devolucion = strtotime($prestamo->fecha_max_devolucion);
+            if($fecha_entrega > $fecha_max_devolucion){
+                $u = Usuario::find_by_pk($prestamo->cc_usuario);
+                $u->puntaje = $u->puntaje-1;
+                $u->save();
+                $array_respuesta[2] = "El usuario excedio la fecha maxima de entrega y por ende sera penalziado"; 
+            }
+            $prestamo->estado_prestamo = "ENTREGADO";
+            $prestamo->fecha_entrega = $fecha_entrega;
+            $prestamo->save();
+            $lista = servicio_admin::list_prest($prestamo->id_libro);
+            $_SESSION['lista.prestamos'] = serialize($lista[1]);
+            $array_respuesta[0] = true;
+            $array_respuesta[1] = "El libro fue entregado con exito";
+        }else{
+            $array_respuesta[0] = false;
+            $array_respuesta[1] = "El prestamo enviado no se encuentra registrado";
+        }
+        return $array_respuesta;
+    }
 }

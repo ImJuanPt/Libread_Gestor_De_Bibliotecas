@@ -4,11 +4,12 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Anuncio.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
 
 $msj = @$_REQUEST["msj"];
-$u = servicio_login::validate_login();
+verificacion_sesion_controller::redic_valid_login();
 $datos = servicio_index::lasts_anunces();
-
+$u = unserialize($_SESSION["usuario.login"]);
 echo "
 <!DOCTYPE html>
 <html lang='en'>

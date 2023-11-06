@@ -27,7 +27,7 @@ $msj = @$_REQUEST["msj"];
                 <div class="container-form">
                     <div class="register_camp">
                         <p><?= $msj ?></p>
-                        <a href="<?= $_SERVER['HTTP_REFERER'] ?> "><button type="button">Volver</button></a>
+                        <a href="<?= isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:$_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/login.php" ?> "><button type="button">Volver</button></a>
                     </div>
                 </div>
             </form>

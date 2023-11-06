@@ -11,8 +11,8 @@ class Libro extends ActiveRecord\Model{
     static $has_many = array(
         array('libros_generos'),
         array('generos', 'through' => 'libros_generos'),
-        array("anuncios") // Un libro tiene muchos anuncios
-
+        array("anuncios"), // Un libro tiene muchos anuncios
+        array("prestamos")
     );
 }
 ?>

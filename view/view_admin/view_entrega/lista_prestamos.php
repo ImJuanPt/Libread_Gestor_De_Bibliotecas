@@ -6,9 +6,9 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/service
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
-if(isset($_SESSION["prestamo.libro"])){
-    $libro = $_SESSION["prestamo.libro"];
-    $libro = unserialize($libro);
+if(isset($_SESSION["lista.prestamos"])){
+    $lista_prestamos = $_SESSION["lista.prestamos"];
+    $lista_prestamos = unserialize($lista_prestamos);
 }else{
     $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/controllers/Index_adminController.php?accion=null";
     header("Location: $urlBase");
@@ -27,7 +27,8 @@ echo "
         <script src='../../../Assets/JS/script_pass.js'></script>
         <script src='../../../Assets/JS/script.js'></script>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-        <link rel='stylesheet' href='../../../Assets/Css/style_index.css'>
+        <link rel='stylesheet' href='../../../Assets/Css/style_index.css'> 
+        <link rel='stylesheet' href='../../../Assets/Css/style_tabla_entrega_libro.css'>
         <link rel='stylesheet' href='../../../Assets/Css/style_libros.css'>
         <link rel='stylesheet' href='../../../Assets/Css/style_vistas.css'>
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
@@ -64,17 +65,46 @@ echo "
                 </div>
             </div>
         </div>
-            <div class='contenedor'>
-                <div class='libro_content_prestamo' id = 'datos'>
-                    <h3>Libro solicitado: ". $libro->nombre. "</h3>
-                    <form action='../../../controllers/Index_adminController.php' method='post' enctype='multipart/form-data'>
-                        <label><h4>Cedula del solicitante</label>
-                        <input type='number' name='cedula_solicitante' required></h4>
-                        <input type='hidden' name='id_libro' value='".$libro->id_libro."'>
-                        <button type='submit' name = 'accion' value = 'validar_prestamo'>Continuar</button>
-                    </form>
-                </div>
-            </div>
-        </body>
-    </html>
-        ";
+        <div class='contenedor2'>
+        <table class='rwd-table' style = 'margin-left: 45px;'>
+        <tr>
+            <th>Nombre prestador</th>
+            <th>Cedula</th>
+            <th>Nombre libro</th>
+            <th>Autor</th>
+            <th>Fecha prestamo</th>
+            <th>Fecha max entrega</th>
+            <th>Estado de prestamo</th>
+            <th>Entregar libro</th>
+        </tr>";
+    if($lista_prestamos){
+    foreach ($lista_prestamos as $prestamo){
+        
+        echo "<tr>
+                <td>".$prestamo['nombre_usuario'] . "</td>
+                <td>".$prestamo['cedula']. "</td>
+                <td>".$prestamo['nombre_libro'] . "</td>
+                <td>".$prestamo['nombre_autor']."</td>
+                <td>".$prestamo['fecha_prestamo']."</td>
+                <td>".$prestamo['fecha_max_devolucion']."</td>
+                <td>".$prestamo['estado_prestamo']."</td>";
+                if($prestamo['estado_prestamo'] === "NO ENTREGADO"){
+                echo "
+                <form action='../../../controllers/Index_adminController.php' method='POST' style='display: inline-block; margin-right: 15px; margin-left: 15px;'>
+                <td>
+                    <input type='hidden' name='id_libro' value='".$prestamo['id_libro']."'>
+                    <input type='hidden' name='id_prestamo' value='".$prestamo['id_prestamo']."'>
+                    <center><button type = 'submit' name = 'accion' value = 'confirmar_entrega' style='background-color: transparent; border: none;'><img src='../../../Assets/Images/iconos/dar_libro.png' title='Entrega de libro' style='width: 30px; cursor: pointer')'></button><center>
+                </td>    
+                </form>
+            </tr>";
+            }
+        }
+    }else{
+        echo "<tr><td>El libro seleccionado no tiene ningun prestamo </td></tr>";
+    }
+echo "      </table>
+        </div>
+    </div>
+</body>";
+?>

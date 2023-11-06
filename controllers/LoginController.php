@@ -3,7 +3,8 @@ session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Usuario.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Prestamo.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
-
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Usuario.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
 class LoginController
 {
     public static function ejecutarAccion()
@@ -20,7 +21,7 @@ class LoginController
                 LoginController::Logout();
                 break;
             default:
-                header("Location:../view/error.php?msj=Accion no permitida");
+                header("Location:../view/error.php?msj=Accion no permitida".$accion);
                 exit;
         }
     }
@@ -30,19 +31,25 @@ class LoginController
         //comprobar si las variables estan definidas y no nulas, si es asi, se obtienen las variables, si no se define como ""
         $cedula = isset($_REQUEST["cc"]) ? $_REQUEST["cc"] : "";
         $clave = isset($_REQUEST["pass"]) ? $_REQUEST["pass"] : "";
+        $urlIndex = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/index_admin.php";
+        $urlIndexAdmin = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/index_admin.php";
 
         if ($cedula !== "" && $clave !== "") {
             //metodo login returna un array, en la posicion 1 se guarda un boolean de si fue exitosa la operacion, en el 2 un mensaje de dicha operacion
-            $answ = servicio_login::login($cedula, $clave);
+
+            service_Usuario::login($cedula, $clave);
+            $answ = isset($_SESSION["login.respuesta"]) ? unserialize($_SESSION["login.respuesta"]) : null;
             if ($answ[1]) {
-                if (servicio_login::type_account()) {
-                    header("Location:../view/view_admin/index_admin.php?msj=$answ[2]");
+                $user = verificacion_sesion_controller::redic_valid_login();
+                if ($user->tipo_usuario == "ADMIN") {
+                    header("Location: $urlIndexAdmin");
+                    exit;
+                } else {
+                    header("Location: $urlIndex");
                     exit;
                 }
-                header("Location:../view/index.php?msj=$answ[2]");
-                exit;
             } else {
-                header("Location:../view/error.php?msj=$answ[2]");
+                header("Location:../view/error.php?msj= sssss $answ[2]");
                 exit;
             }
         } else {
@@ -50,6 +57,8 @@ class LoginController
             exit;
         }
     }
+
+    
 
     public static function Logout()
     {
@@ -68,14 +77,8 @@ class LoginController
         $correo = isset($_REQUEST["correo"]) ? $_REQUEST["correo"] : "";
         $nombre = isset($_REQUEST["nombre"]) ? $_REQUEST["nombre"] : "";
         if ($cedula !== "" && $clave !== "" && $apellido1 !== "" && $apellido2 !== "" && $correo !== "" && $nombre !== "") {
-            $u = new Usuario();
-            $u->cedula = $cedula;
-            $u->passw = $clave;
-            $u->apellido_1 = $apellido1;
-            $u->apellido_2 = $apellido2;
-            $u->correo = $correo;
-            $u->nombre = $nombre;
-            $answ = servicio_login::register($u);
+            
+            $answ = servicio_login::register($cedula, $clave, $apellido1, $apellido2, $correo, $nombre);
             if ($answ[1]) {
                 header("Location:../view/index.php?msj=$answ[2]");
                 exit;
@@ -84,7 +87,7 @@ class LoginController
                 exit;
             }
         } else {
-            header("Location:../view/error.php?msj=Debe llenar todos los campos para continuar" . $cedula . $clave . $apellido1 . $apellido2 . $correo . $nombre);
+            header("Location:../view/error.php?msj=Debe llenar todos los campos para continuar");
             exit;
         }
     }

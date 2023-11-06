@@ -63,24 +63,8 @@ class servicio_login
     }
 
     //metodo para verificar que haya una sesion iniciada, si no se devuelve para el login
-    public static function validate_login()
-    {
-        if (isset($_SESSION["usuario.login"])) {
-            return unserialize($_SESSION["usuario.login"]);
-        }
-        $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/login.php";
-        //verificar si la ruta actual es distinta a la que se redirije si no se ha iniciado sesion, sino entra en buqle
-        if ($_SERVER['PHP_SELF'] != "/Libread_Gestor_De_Bibliotecas/view/login.php") {
-            header("Location: $urlBase");
-            exit;
-        }
-    }
+    
 
     //metodo para verificar si la cuenta es de tipo administrador o default
-    public static function type_account()
-    {
-        $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php?msj=No tiene los permisos para acceder a esta pagina";
-        $u = servicio_login::validate_login();
-        return $u->tipo_usuario === "ADMIN" ? true :  header("Location: $urlBase");
-    }
+   
 }

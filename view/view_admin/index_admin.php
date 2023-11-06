@@ -7,12 +7,13 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
 
 if(isset($_REQUEST["msj"])){
     $msj = $_REQUEST["msj"];
     echo '<script>alert("'.$msj.'");</script>';
 }
-servicio_login::type_account();
+verificacion_sesion_controller::redic_valid_login();
 $result = servicio_admin::list_books();
 
 echo "
@@ -76,8 +77,8 @@ foreach ($result as $row_libro) {
     echo "  <div class='libro_content' id = 'datos'>
                 <form action='desc_libro.php' method='POST'>
                     <input type='hidden' name='id_libro' value='" . $row_libro->id_libro . "'>
-                    <p class='titulo' style='cursor: pointer' ><button type='submit'>" . $row_libro->nombre . "</button></p>
-                    <img class='portada' src='../../Assets/" . $row_libro->img_portada . "' title='" . $row_libro->descripcion . "' style='width: 160px; height: 210px; cursor: pointer' onclick='submitForm(\"form-libro-" . $row_libro->id_libro . "\")'><br>
+                    <p class='titulo' style='cursor: pointer' ><button class='boton_titulo' type='submit'>" . $row_libro->nombre . "</button></p>
+                    <button type='submit'><img class='portada' src='../../Assets/" . $row_libro->img_portada . "' title='" . $row_libro->descripcion . "' style='width: 160px; height: 210px; cursor: pointer')'></button><br>
                     <p class='descripcion'>Descripcion: " . $row_libro->descripcion . "</p><br><br>
                     <p class='descripcion'> Autor: " . $row_libro->nombre_autor . "</p>
                     <p class='descripcion'>Stock: " . $row_libro->stock . "</p>
@@ -88,7 +89,7 @@ foreach ($result as $row_libro) {
                     <button class='prestar' title='Eliminar' type='submit' value='Eliminar' name='accion'> <img src='../../Assets/Images/iconos/eliminar.png'></button>
                     <button class='prestar' title='Editar' type='submit' value='Editar' name='accion'><img src='../../Assets/Images/iconos/editar.png' ></button>
                     <button class='prestar' title='Generar prestamo' type='submit' value='Solicitar_prestamo' name='accion'><img src='../../Assets/Images/iconos/generar_prestamo.png'></button>
-                    <button class='prestar' title='Generar entrega' type='submit' value='Generar_entrega name='accion'><img src='../../Assets/Images/iconos/prestamos_libros.png'></button>
+                    <button class='prestar' title='Generar entrega' type='submit' value='lista_prestamos' name='accion'><img src='../../Assets/Images/iconos/prestamos_libros.png'></button>
                 </form>
             </div>";
 }

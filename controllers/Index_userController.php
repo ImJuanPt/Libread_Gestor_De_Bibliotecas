@@ -22,7 +22,7 @@ class Index_userController
                 LoginController::Logout();
                 break;
             default:
-                header("Location:../view/error.php?msj=Accion no permitida");
+                header("Location:../view/error.php?msj=Accion no permitida $accion");
                 exit;
         }
     }

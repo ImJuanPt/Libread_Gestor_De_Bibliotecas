@@ -45,8 +45,14 @@ class Index_adminController
             case "confirmar_prestamo":
                 Index_adminController::confirmar_prestamo();
                 break;
+            case "lista_prestamos":
+                Index_adminController::lista_prestamos();
+                break;
+            case "confirmar_entrega":
+                Index_adminController::confirmar_entrega();
+                break;
             default:
-                header("Location:../view/error.php?msj=Accion no permitida");
+                header("Location:../view/error.php?msj=Accion no permitida $accion");
                 exit;
         }
     }
@@ -204,11 +210,55 @@ class Index_adminController
             $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/index_admin.php";
             header("Location: $urlBase?msj=$answ[1]");
             exit;
-        }else{
+        } else {
             $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
             header("Location: $urlBase?msj=$answ[1]");
             exit();
         }
+    }
+
+    public static function lista_prestamos()
+    {
+        $id_libro = isset($_REQUEST["id_libro"]) ? $_REQUEST["id_libro"] : "";
+        if ($id_libro != "") {
+            $list = servicio_admin::list_prest($id_libro);
+            if ($list[0]) {
+                $_SESSION['lista.prestamos'] = serialize($list[1]);
+                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/view_entrega/lista_prestamos.php";
+                header("Location: $urlBase");
+                exit();
+            } else {
+                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
+                header("Location: $urlBase?msj=$list[1]");
+                exit();
+            }
+        } else {
+            $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
+            header("Location: $urlBase?msj=todos los campos deben estar llenos para continuar");
+            exit();
+        }
+    }
+
+    public static function confirmar_entrega()
+    {
+        $id_prestamo = isset($_REQUEST["id_prestamo"]) ? $_REQUEST["id_prestamo"] : "";
+        if ($id_prestamo != "") {
+            $resp = servicio_admin::confirm_entrega($id_prestamo);
+            if($resp[0]){
+                $urlBase = $_SERVER['HTTP_REFERER'];
+                header("Location: $urlBase");
+                exit();
+            }else{
+                $urlBase = $_SERVER['HTTP_REFERER'];
+                //header("Location: $urlBase");
+                //exit();
+            }
+        }else{
+            $urlBase = $_SERVER['HTTP_REFERER'];
+                //header("Location: $urlBase");
+                //exit();
+        }
+
     }
 }
 

@@ -8,8 +8,9 @@
  require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
  require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
  require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
+ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
  
- servicio_login::type_account();
+ verificacion_sesion_controller::redic_valid_login();
  $id_libro = isset($_REQUEST["id_libro"]) ? $_REQUEST["id_libro"] : "";
  $row_libro = servicio_admin::find_book($id_libro);
  $generos = servicio_admin::gender_book($id_libro);

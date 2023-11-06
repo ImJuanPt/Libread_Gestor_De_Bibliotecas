@@ -7,12 +7,17 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
+
+verificacion_sesion_controller::redic_valid_login();
+$u = unserialize($_SESSION["usuario.login"]);
 if(isset($_REQUEST["msj"])){
     $msj = $_REQUEST["msj"];
     echo '<script>alert("'.$msj.'");</script>';
 }
-servicio_login::type_account();
-$u = servicio_login::validate_login();
+
+verificacion_sesion_controller::redic_valid_login();
+$u = unserialize($_SESSION["usuario.login"]);
 echo "
     <!DOCTYPE html>
     <html>

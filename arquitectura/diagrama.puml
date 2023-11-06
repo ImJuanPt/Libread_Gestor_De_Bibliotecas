@@ -1,0 +1,50 @@
+@startuml
+class Anuncio{
+    - id_anuncio:INT
+    - libro:Libro
+    - tipo_anuncio:STRING
+    - descripcion:STRING
+}
+class Prestamo{
+    - id_prestamo:INT
+    - libro:Libro
+    - cc_usuario:INT
+    - fecha_prestamo:DATE
+    - fecha_max_devolucion:DATE
+    - estado_prestamo:STRING
+    - fecha_entrega:DATE
+}
+
+class Libro{
+    - id_libro:INT
+    - nombre:STRING
+    - descripcion:STRING
+    - stock:INT
+    - prestamos_activos:INT
+    - fecha_publicacion:DATE
+    - id_autor:INT
+    - img_portada:STRING
+    - estado_libro:STRING
+}
+
+class Usuario{
+    - cedula:INT
+    - nombre:STRING
+    - apellido_1:STRING
+    - apellido_2:STRING
+    - passw:String
+    - correo:String
+    - prestamos_activos:Int
+    - puntaje:Int
+    - estado_cuenta:Boolean
+    - tipo_usuario:String
+    - usuarios : List<Usuario>
+}
+
+Anuncio "*"--"1" Libro : contener
+Usuario "*"--"*" Libro : solicitar
+(Usuario, Libro) .. Prestamo
+
+
+
+@enduml

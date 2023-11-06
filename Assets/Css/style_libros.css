@@ -121,6 +121,14 @@
     margin-right: 221px;
 }
 
+.boton_titulo{
+    background: transparent;
+    border: none;
+    font-size: 27px;
+    cursor: pointer;
+    height: 10px;
+}
+
 
 
    
