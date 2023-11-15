@@ -4,8 +4,6 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Genero.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Anuncio.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Libro.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
 class servicio_admin
 {
@@ -73,7 +71,7 @@ class servicio_admin
         return $generos;
     }
 
-    public static function list_gender()
+    public static function list_gender() #CREAR EN SERIVICIO GENEROSSSSSSS ----------------------------------------------------------
     {
         $g = Genero::all();
         return $g;
@@ -133,7 +131,7 @@ class servicio_admin
                 }
                 Anuncio::create([
                     'id_libro' => $id_libro, 'tipo_anuncio' => 'Nuevo libro',
-                    'descripcion' => 'Un nuevo libro ha sido agregado a nuestra biblioteca, puede que sea de su agrado'
+                    'descripcion' => $nombre.' ha sido agregado a nuestra biblioteca, puede que sea de su agrado'
                 ]);
 
                 $array_respuesta[1] = true;
@@ -185,6 +183,7 @@ class servicio_admin
             if (empty($existeAutor)) {
                 // Insertar el autor solo si no existe
                 $autor = Autor::create(['nombre_autor' => $autor]);
+
             } else {
                 $autor = $existeAutor[0];
             }

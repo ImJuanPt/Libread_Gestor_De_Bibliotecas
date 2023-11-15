@@ -1,18 +1,13 @@
 <?php
 session_start();
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Usuario.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/LibrosGenero.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Anuncio.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Libro.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Libro.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Autor.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
 
 if(isset($_REQUEST["id_libro"])){
     $id = $_REQUEST["id_libro"];
-    $book = servicio_admin::find_book($id);
-    $autor = servicio_admin::find_autor($book[0]->id_autor);
+    $book = service_Libro::find_book($id);
+    $autor = service_Autor::findAutor($book->id_autor);
 }
 verificacion_sesion_controller::redic_valid_login();
 $result = servicio_admin::list_books();
@@ -66,18 +61,18 @@ echo "
             <div class='contenedor'>
                 <div class='libro_content_insert' id = 'datos'>
                     <form action='../../controllers/Index_adminController.php' method='post' enctype='multipart/form-data'>
-                        <input type='hidden' name='id_libro' value='".$book[0]->id_libro."'>
+                        <input type='hidden' name='id_libro' value='".$book->id_libro."'>
                         <label class='labe' for='nombre'>Nombre</label>
-                        <input class='labe' type='text' name='nombre' value = '".$book[0]->nombre."' required>
+                        <input class='labe' type='text' name='nombre' value = '".$book->nombre."' required>
                         <label class='labe' for='desc'>Descripcion</label>
-                        <input class='labe' type='text' name='desc' value = '".$book[0]->descripcion."' required>
+                        <input class='labe' type='text' name='desc' value = '".$book->descripcion."' required>
                         <label class='labe' for='autor'>Autor</label>
                         <input class='labe' type='text' name='autor' value = '".$autor->nombre_autor."' required>
                         <label class='labe' for='stock'>Stock</label>
-                        <input class='labe' type='number' name='stock' value = '".$book[0]->stock."' required><br>
+                        <input class='labe' type='number' name='stock' value = '".$book->stock."' required><br>
                         <label class='checkbx'>Seleccione uno o varios geneross:</label>
                         <div class='contenedor_checkbox'>";
-                                $generos_libro = servicio_admin::list_gender_on_book($book[0]->id_libro); // array para almacenar los nombres de los géneros que tiene el libro
+                                $generos_libro = servicio_admin::list_gender_on_book($book->id_libro); // array para almacenar los nombres de los géneros que tiene el libro
                                 $result_generos = servicio_admin::list_gender();
                                 $i = 0;
                                 foreach ($result_generos as $row_generos) {

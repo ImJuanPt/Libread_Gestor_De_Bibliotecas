@@ -2,14 +2,15 @@
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Usuario.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Anuncio.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Anuncio.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
 
 $msj = @$_REQUEST["msj"];
 verificacion_sesion_controller::redic_valid_login();
-$datos = servicio_index::lasts_anunces();
 $u = unserialize($_SESSION["usuario.login"]);
+$datos = service_Anuncio::lasts_anunces();
+
 echo "
 <!DOCTYPE html>
 <html lang='en'>
@@ -78,7 +79,7 @@ echo "
     </div>
     <div class='welcome'>
         <div>
-            <p class='bienvenido'>Bienvenido " . $u->nombre . "!</p>
+            <p class='bienvenido'>Bienvenido " . $u->nombre ."!</p>
             <p class='aventura'>¿Que aventura tendrás el día de hoy?</p>
         </div>
     </div>

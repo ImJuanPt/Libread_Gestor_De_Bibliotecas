@@ -5,13 +5,14 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Prestamo.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
 if (isset($_SESSION["prestamo.libro"]) && isset($_SESSION["prestamo.usuario"])) {
     $libro = $_SESSION["prestamo.libro"];
     $usuario = $_SESSION["prestamo.usuario"];
     $libro = unserialize($libro);
     $usuario = unserialize($usuario);
-    $fechas = servicio_admin::select_dates();
+    $fechas = service_Prestamo::select_dates();
 } else {
     $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/controllers/Index_adminController.php?accion=null";
     header("Location: $urlBase");

@@ -1,5 +1,6 @@
 <?php
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_profileEdit.php";
+session_start();
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Usuario.php";
 class profile_editController
 {
     public static function ejecutarAccion()
@@ -30,9 +31,9 @@ class profile_editController
         $correo = isset($_REQUEST["email"]) ? $_REQUEST["email"] : "";
         $nombre = isset($_REQUEST["nombre"]) ? $_REQUEST["nombre"] : "";
         if ($cedula !== "" && $clave !== "" && $apellido1 !== "" && $apellido2 !== "" && $correo !== "" && $nombre !== "") {
-            $answ = servicio_profileEdit::edit_profile($nombre, $apellido1, $apellido2, $clave, $correo, $cedula);
+            service_Usuario::edit_profile($nombre, $apellido1, $apellido2, $clave, $correo, $cedula);
+            $answ = unserialize($_SESSION["edit_profile.respuesta"]); 
             if($answ[1]){
-                echo '';
                 header("Location:../view/view_admin/profile.php?msj=".$answ[2]);
                 exit;
             }else{

@@ -2,26 +2,36 @@
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Usuario.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Prestamo.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Usuario.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
 class LoginController
 {
+    public static $urlIndex;
+    public static $urlIndexAdmin;
+    public static $urlLogin;
+
+    public static function inicializarVariables()
+    {
+        self::$urlIndex = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/index.php";
+        self::$urlIndexAdmin = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/index_admin.php";
+        self::$urlLogin = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/login.php";
+    }
+
     public static function ejecutarAccion()
     {
         $accion = @$_REQUEST["accion"];
         switch ($accion) {
             case "Login":
-                LoginController::login();
+                self::login();
                 break;
             case "register":
-                LoginController::register();
+                self::register();
                 break;
             case "Logout":
-                LoginController::Logout();
+                self::Logout();
                 break;
             default:
-                header("Location:../view/error.php?msj=Accion no permitida".$accion);
+                header("Location:../view/error.php?msj=Accion no permitida" . $accion);
                 exit;
         }
     }
@@ -31,8 +41,7 @@ class LoginController
         //comprobar si las variables estan definidas y no nulas, si es asi, se obtienen las variables, si no se define como ""
         $cedula = isset($_REQUEST["cc"]) ? $_REQUEST["cc"] : "";
         $clave = isset($_REQUEST["pass"]) ? $_REQUEST["pass"] : "";
-        $urlIndex = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/index_admin.php";
-        $urlIndexAdmin = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/index_admin.php";
+
 
         if ($cedula !== "" && $clave !== "") {
             //metodo login returna un array, en la posicion 1 se guarda un boolean de si fue exitosa la operacion, en el 2 un mensaje de dicha operacion
@@ -42,14 +51,14 @@ class LoginController
             if ($answ[1]) {
                 $user = verificacion_sesion_controller::redic_valid_login();
                 if ($user->tipo_usuario == "ADMIN") {
-                    header("Location: $urlIndexAdmin");
+                    header("Location: " . self::$urlIndexAdmin);
                     exit;
                 } else {
-                    header("Location: $urlIndex");
+                    header("Location: " . self::$urlIndex);
                     exit;
                 }
             } else {
-                header("Location:../view/error.php?msj= sssss $answ[2]");
+                header("Location:../view/error.php?msj= $answ[2]");
                 exit;
             }
         } else {
@@ -58,13 +67,12 @@ class LoginController
         }
     }
 
-    
+
 
     public static function Logout()
     {
-        servicio_login::Logout();
-        $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/login.php";
-        header("Location: $urlBase");
+        service_Usuario::Logout();
+        header("Location: " . self::$urlLogin);
     }
 
 
@@ -77,8 +85,10 @@ class LoginController
         $correo = isset($_REQUEST["correo"]) ? $_REQUEST["correo"] : "";
         $nombre = isset($_REQUEST["nombre"]) ? $_REQUEST["nombre"] : "";
         if ($cedula !== "" && $clave !== "" && $apellido1 !== "" && $apellido2 !== "" && $correo !== "" && $nombre !== "") {
-            
-            $answ = servicio_login::register($cedula, $clave, $apellido1, $apellido2, $correo, $nombre);
+
+            service_Usuario::register($cedula, $clave, $apellido1, $apellido2, $correo, $nombre);
+            $answ = unserialize($_SESSION["register.respuesta"]);
+
             if ($answ[1]) {
                 header("Location:../view/index.php?msj=$answ[2]");
                 exit;
@@ -92,4 +102,6 @@ class LoginController
         }
     }
 }
+
+LoginController::inicializarVariables();
 LoginController::ejecutarAccion();

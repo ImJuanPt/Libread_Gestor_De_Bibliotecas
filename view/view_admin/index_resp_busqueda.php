@@ -1,14 +1,12 @@
+
 <?php
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Libro.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
-
-if(isset($_REQUEST["msj"])){
-    $msj = $_REQUEST["msj"];
-    echo '<script>alert("'.$msj.'");</script>';
-}
+$busqueda = $_POST['texto_busqueda'];
+$opcion = $_POST['opcion_busqueda'];
 verificacion_sesion_controller::redic_valid_login();
-$result = service_Libro::list_books();
+$result = service_Libro::listSearchBooks($opcion, $busqueda);
 
 echo "
     <!DOCTYPE html>
@@ -65,10 +63,9 @@ echo "
                 </form>
             </div>
     </div>
-
             <div class='contenedor2'>";
-foreach ($result as $row_libro) {
-    echo "  <div class='libro_content' id = 'datos'>
+            foreach ($result as $row_libro) {
+                echo "  <div class='libro_content' id = 'datos'>
                 <form action='desc_libro.php' method='POST'>
                     <input type='hidden' name='id_libro' value='" . $row_libro->id_libro . "'>
                     <p class='titulo' style='cursor: pointer' ><button class='boton_titulo' type='submit'>" . $row_libro->nombre . "</button></p>

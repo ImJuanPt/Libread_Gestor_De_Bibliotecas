@@ -2,8 +2,9 @@
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Usuario.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Prestamo.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Libro.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Prestamo.php";
 
 class Index_adminController
 {
@@ -91,37 +92,56 @@ class Index_adminController
         $fecha_publicacion = date("Y-m-d");
         $stock = isset($_REQUEST["stock"]) ? $_REQUEST["stock"] : "";
         $generos = isset($_REQUEST["nombre"]) ? $_REQUEST["generos"] : "";
-        if ($nombre !== "" && $descripcion !== "" && $autor !== "" && $stock !== "" && $generos !== "") {
-            $answ = servicio_admin::insert_book($nombre, $descripcion, $fecha_publicacion, $stock, ucwords(strtolower($autor)), $generos);
-            if ($answ[1]) {
-                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/insert_libro.php";
-                header("Location: $urlBase?msj=$answ[2]");
-                exit();
+        try {
+            if ($nombre !== "" && $descripcion !== "" && $autor !== "" && $stock !== "" && $generos !== "") {
+                service_Libro::insert_book($nombre, $descripcion, $fecha_publicacion, $stock, ucwords(strtolower($autor)), $generos);
+                if (isset($_SESSION["libro.respuesta"])) {
+                    $answ =  unserialize($_SESSION["libro.respuesta"]);
+                } else {
+                    throw new Exception("Error en sesion");
+                }
+
+                if ($answ[1]) {
+                    $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/insert_libro.php";
+                    header("Location: $urlBase?msj=$answ[2]");
+                    exit();
+                } else {
+                    throw new Exception($answ[2]);
+                }
             } else {
-                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
-                header("Location: $urlBase?msj=$answ[2]");
-                exit();
+                throw new Exception("todos los campos deben estar llenos para continuar");
             }
-        } else {
+        } catch (Exception $e) {
             $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
-            header("Location: $urlBase?msj=todos los campos deben estar llenos para continuar");
+            header("Location: $urlBase?msj=" . $e->getMessage());
             exit();
         }
     }
     public static function libro_delete()
     {
         $id = isset($_REQUEST["id_libro"]) ? $_REQUEST["id_libro"] : "";
-        if ($id !== "") {
-            $answ = servicio_admin::delete_book($id);
-            if ($answ[1]) {
-                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/index_admin.php";
-                header("Location: $urlBase?msj=$answ[2]");
-                exit();
+        try {
+            if ($id !== "") {
+                service_Libro::delete_book($id);
+                if (isset($_SESSION["libro.respuesta"])) {
+                    $answ =  unserialize($_SESSION["libro.respuesta"]);
+                } else {
+                    throw new Exception("Error en sesion");
+                }
+                if ($answ[1]) {
+                    $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/index_admin.php";
+                    header("Location: $urlBase?msj=$answ[2]");
+                    exit();
+                } else {
+                    throw new Exception($answ[2]);
+                }
             } else {
-                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
-                header("Location: $urlBase?msj=$answ[2]");
-                exit();
+                throw new Exception("Error en la trasnferencia de datos");
             }
+        } catch (Exception $e) {
+            $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
+            header("Location: $urlBase?msj=" . $e->getMessage());
+            exit();
         }
     }
     public static function libro_Edit()
@@ -147,7 +167,12 @@ class Index_adminController
         $stock = isset($_REQUEST["stock"]) ? $_REQUEST["stock"] : "";
         $generos = isset($_REQUEST["nombre"]) ? $_REQUEST["generos"] : "";
         if ($id_libro !== "" && $nombre !== "" && $descripcion !== "" && $autor !== "" && $stock !== "" && $generos !== "") {
-            $answs = servicio_admin::edit_book($id_libro, $nombre, $descripcion, $stock, ucwords(strtolower($autor)), $generos);
+            service_Libro::edit_book($id_libro, $nombre, $descripcion, $stock, ucwords(strtolower($autor)), $generos);
+            if (isset($_SESSION["libro.respuesta"])) {
+                $answs =  unserialize($_SESSION["libro.respuesta"]);
+            } else {
+                throw new Exception("Error en sesion");
+            }
             if ($answs[1]) {
                 $urlBase = $_SERVER['HTTP_REFERER'];
                 header("Location: $urlBase");
@@ -166,46 +191,55 @@ class Index_adminController
     public static function solicitar_prestamo()
     {
         $id_libro = isset($_REQUEST["id_libro"]) ? $_REQUEST["id_libro"] : "";
-        if ($id_libro != "") {
-            if (servicio_admin::select_solic_prest_libro($id_libro)) {
-                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/view_prestamo/solicitar_prestamo.php";
-                header("Location: $urlBase");
-                exit();
+        try {
+            if ($id_libro != "") {
+                service_Prestamo::select_solic_prest_libro($id_libro);
+                $resp = unserialize($_SESSION["prestamo.libro"]);
+                if ($resp instanceof Libro) {
+                    $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/view_prestamo/solicitar_prestamo.php";
+                    header("Location: $urlBase");
+                    exit();
+                } else {
+                    throw new Exception($resp);
+                }
             } else {
-                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
-                header("Location: $urlBase?msj=No hay un libro seleccionado para realizar el prestamo");
-                exit();
+                throw new Exception("Todos los campos deben estar llenos para continuar");
             }
-        } else {
+        } catch (Exception $e) {
             $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
-            header("Location: $urlBase?msj=todos los campos deben estar llenos para continuar");
+            header("Location: $urlBase?msj=" . $e->getMessage());
             exit();
         }
     }
     public static function validar_prestamo()
     {
         $id_usuario = isset($_REQUEST["cedula_solicitante"]) ? $_REQUEST["cedula_solicitante"] : "";
-        if ($id_usuario != "") {
-            if (servicio_admin::select_solic_prest_usuario($id_usuario)) {
-                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/view_prestamo/validar_prestamo.php";
-                header("Location: $urlBase");
-                exit();
+        try {
+            if ($id_usuario != "") {
+                service_Prestamo::select_solic_prest_usuario($id_usuario);
+                $resp = unserialize($_SESSION["prestamo.usuario"]);
+                if ($resp instanceof Usuario) {
+                    $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/view_prestamo/validar_prestamo.php";
+                    header("Location: $urlBase");
+                    exit();
+                } else {
+                    throw new Exception($resp);
+                }
             } else {
-                $_SESSION['sesion.error'] = serialize("El usuario ingresado con cedula $id_usuario no existe");
-                $urlBase = $_SERVER['HTTP_REFERER'];
-                header("Location: $urlBase");
-                exit();
+                throw new Exception("Todos los campos deben estar llenos para continuar");
             }
-        } else {
+        } catch (Exception $e) {
             $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
-            header("Location: $urlBase?msj=todos los campos deben estar llenos para continuar");
+            header("Location: $urlBase?msj=" . $e->getMessage());
             exit();
         }
     }
 
     public static function confirmar_prestamo()
     {
-        $answ = servicio_admin::confirmar_prestamo();
+        service_Prestamo::confirmar_prestamo();
+        $answ = unserialize($_SESSION["prestamo.respuesta"]);
+
         if ($answ[0]) {
             $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/index_admin.php";
             header("Location: $urlBase?msj=$answ[1]");
@@ -220,21 +254,24 @@ class Index_adminController
     public static function lista_prestamos()
     {
         $id_libro = isset($_REQUEST["id_libro"]) ? $_REQUEST["id_libro"] : "";
-        if ($id_libro != "") {
-            $list = servicio_admin::list_prest($id_libro);
-            if ($list[0]) {
-                $_SESSION['lista.prestamos'] = serialize($list[1]);
-                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/view_entrega/lista_prestamos.php";
-                header("Location: $urlBase");
-                exit();
+        try {
+            if ($id_libro != "") {
+                service_Prestamo::list_prest($id_libro);
+                $resp = unserialize($_SESSION["prestamo.respuesta"]);
+                if ($resp[0]) {
+                    $_SESSION['lista.prestamos'] = serialize($resp[1]);
+                    $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/view_admin/view_entrega/lista_prestamos.php";
+                    header("Location: $urlBase");
+                    exit();
+                } else {
+                    throw new Exception($resp);
+                }
             } else {
-                $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
-                header("Location: $urlBase?msj=$list[1]");
-                exit();
+                throw new Exception("Todos los campos deben estar llenos para continuar");
             }
-        } else {
+        } catch (Exception $e) {
             $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/view/error.php";
-            header("Location: $urlBase?msj=todos los campos deben estar llenos para continuar");
+            header("Location: $urlBase?msj=" . $e->getMessage());
             exit();
         }
     }
@@ -244,21 +281,20 @@ class Index_adminController
         $id_prestamo = isset($_REQUEST["id_prestamo"]) ? $_REQUEST["id_prestamo"] : "";
         if ($id_prestamo != "") {
             $resp = servicio_admin::confirm_entrega($id_prestamo);
-            if($resp[0]){
+            if ($resp[0]) {
                 $urlBase = $_SERVER['HTTP_REFERER'];
                 header("Location: $urlBase");
                 exit();
-            }else{
+            } else {
                 $urlBase = $_SERVER['HTTP_REFERER'];
                 //header("Location: $urlBase");
                 //exit();
             }
-        }else{
+        } else {
             $urlBase = $_SERVER['HTTP_REFERER'];
-                //header("Location: $urlBase");
-                //exit();
+            //header("Location: $urlBase");
+            //exit();
         }
-
     }
 }
 

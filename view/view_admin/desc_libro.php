@@ -1,18 +1,12 @@
 <?php
  session_start();
- require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Usuario.php";
- require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/LibrosGenero.php";
- require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Genero.php";
- require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Anuncio.php";
- require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Libro.php";
- require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
- require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
+ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Libro.php";
  require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
  require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
  
  verificacion_sesion_controller::redic_valid_login();
  $id_libro = isset($_REQUEST["id_libro"]) ? $_REQUEST["id_libro"] : "";
- $row_libro = servicio_admin::find_book($id_libro);
+ $row_libro = service_Libro::find_book($id_libro);
  $generos = servicio_admin::gender_book($id_libro);
  echo "
      <!DOCTYPE html>
@@ -73,12 +67,12 @@
     </div>
         <div class='contenedor3'>";
          echo "<div class='libro_content'>
-                    <input type='hidden' name='id_libro' value='".$row_libro[0]->id_libro."'><p class='titulo'>".$row_libro[0]->nombre."</p>
-                            <img class='portada' src='../../Assets/".$row_libro[0]->img_portada."' title='".$row_libro[0]->descripcion."' style='width: 160px; height: 210px;'><br>
-                            <p class='descripcion'>Descripcion: ".$row_libro[0]->descripcion."</p><br><br>
-                            <p class='descripcion'> Autor: ".$row_libro[0]->nombre_autor."</p>
-                            <p class='descripcion'>Stock: ".$row_libro[0]->stock."</p>
-                            <p class='descripcion'>Fecha de publicacion: ".$row_libro[0]->fecha_publicacion."</p>
+                    <input type='hidden' name='id_libro' value='".$row_libro->id_libro."'><p class='titulo'>".$row_libro->nombre."</p>
+                            <img class='portada' src='../../Assets/".$row_libro->img_portada."' title='".$row_libro->descripcion."' style='width: 160px; height: 210px;'><br>
+                            <p class='descripcion'>Descripcion: ".$row_libro->descripcion."</p><br><br>
+                            <p class='descripcion'> Autor: ".$row_libro->nombre_autor."</p>
+                            <p class='descripcion'>Stock: ".$row_libro->stock."</p>
+                            <p class='descripcion'>Fecha de publicacion: ".$row_libro->fecha_publicacion."</p>
                             <p class='descripcion'>Generos: ".$generos."</p>
                 </div>";
       echo "</div>
