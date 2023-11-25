@@ -61,7 +61,7 @@ echo "
             <div class='logout'><a href = '../../controllers/UsuarioController.php?accion=Logout'><button><img src='../../Assets/Images/Botones/salir.png' ></button><a></div>
         </div>
                     <div class='home'>
-                        <a style='cursor: pointer' href = 'profile_user.php'> 
+                        <a style='cursor: pointer' href = 'index.php'> 
                         <img src='../../Assets/Images/Botones/volver.png' style = 'margin: auto;margin-left: 55%;'>
                     </div>
                  </div>

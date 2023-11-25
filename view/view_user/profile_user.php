@@ -58,7 +58,7 @@ echo "
                 <div class='logout2'><a href = '../controllers/UsuarioController.php?accion=Logout'><button><img src='../../Assets/Images/Botones/salir.png' ></button></a></div>
                     
                 <div class='home'>
-                <a style='cursor: pointer' onclick='submitForm(\"enviar_datos_usuario" . $u->cedula . "\")'>
+                <a style='cursor: pointer' href = 'index.php'>
                     <img src='../../Assets/Images/Botones/separador.png' style = 'margin: auto;margin-left: 55%;'>
                 </a>
                 </div>

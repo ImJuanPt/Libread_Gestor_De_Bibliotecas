@@ -63,11 +63,9 @@ echo "
         </div>
     </div>
     <div class='home'>
-        <form action='index.php' method='post'>
-            <a style='cursor: pointer'>
+            <a style='cursor: pointer' href = 'index.php'>
                 <img src='../../Assets/Images/Botones/separador.png' style = 'margin: auto;margin-left: 55%;'>
             </a>
-        </form>
     </div>
 
     <div class='contenedor2'>
