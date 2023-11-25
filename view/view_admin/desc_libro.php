@@ -1,13 +1,13 @@
 <?php
  session_start();
  require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Libro.php";
- require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
+ require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Genero.php";
  require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
  
  verificacion_sesion_controller::redic_valid_login();
  $id_libro = isset($_REQUEST["id_libro"]) ? $_REQUEST["id_libro"] : "";
  $row_libro = service_Libro::find_book($id_libro);
- $generos = servicio_admin::gender_book($id_libro);
+ $generos = service_Genero::gender_book($id_libro);
  echo "
      <!DOCTYPE html>
      <html>
@@ -31,25 +31,25 @@
              </div>
              <div class='container-nav'>
                  <div class='nav'>
-                        <a href = '../../controllers/Index_adminController.php?accion=Perfil'>
+                        <a href = '../../controllers/UsuarioController.php?accion=Perfil'>
                              <img src='../../Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                              <p>Perfil</p> 
                         </a>
                  </div>
                      <div class='nav'>
-                        <a href = '../../controllers/Index_adminController.php?accion=index_admin'>
+                        <a href = '../../controllers/UsuarioController.php?accion=Index'>
                              <img src='../../Assets/Images/Botones/libro.png' style = 'margin: auto;margin-left: 55%;'>
                              <p>Libros</p> 
                          </a>
                      </div>
                  <div class='nav'>
-                         <a href = '../../controllers/LoginController?accion=registrar_libro'>
+                         <a href = '../../controllers/LibroController.php?accion=registrar_libro'>
                              <img src='../../Assets/Images/Botones/prestamo.png' style = 'margin: auto;margin-left: 55%;'>
                              <p>Registrar libros</p> 
                          </a>
                  </div>
              </div>
-             <div class='logout2'><a href = '../../controllers/LoginController?accion=Logout'><button><img src='../../Assets/Images/Botones/salir.png' ></button></a></div>
+             <div class='logout2'><a href = '../../controllers/UsuarioController.php?accion=Logout'><button><img src='../../Assets/Images/Botones/salir.png' ></button></a></div>
          </div>
      </div>
             

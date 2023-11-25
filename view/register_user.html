@@ -17,16 +17,16 @@
                 </div>
                <a href="index.html"><img src="../Assets/Images/Logo/image-removebg-preview.png" alt=""></a> 
             </div>
-            <form action="../controllers/LoginController.php" method="post">
+            <form action="../controllers/UsuarioController.php" method="post">
                 <div class="container-form">
                     <div class="register_camp">
                         <p>Ingrese los siguientes datos</p>
-                            <input placeholder="Nombre" type="text" name="nombre"> <br>
-                            <input placeholder="Primer apellido" type="text" name="apellido1" > <br>
-                            <input placeholder="Segundo apellido" type="text" name="apellido2"> <br>
-                            <input placeholder="Cedula" type="number" name="cc"> <br>
-                            <input placeholder="Correo" type="email" name="correo"> <br>
-                            <input placeholder="Contraseña" type="password" name="contra"> <br>
+                            <input placeholder="Nombre" type="text" name="nombre" required> <br>
+                            <input placeholder="Primer apellido" type="text" name="apellido1" required > <br>
+                            <input placeholder="Segundo apellido" type="text" name="apellido2" required> <br>
+                            <input placeholder="Cedula" type="number" name="cc" required> <br>
+                            <input placeholder="Correo" type="email" name="correo" required> <br>
+                            <input placeholder="Contraseña" type="password" name="contra" required> <br>
                             <button type="submit" value="register" name="accion"><img src="" alt="">Registrarse</button>
                             <a href="login.php"><button type="button">Volver</button></a>
                     </div>

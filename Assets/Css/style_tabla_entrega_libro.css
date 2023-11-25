@@ -1,7 +1,7 @@
 @import "https://fonts.googleapis.com/css?family=Montserrat:300,400,700";
 .rwd-table {
   margin: 1em 0;
-  min-width: 300px;
+  min-width: 631px;
 }
 .rwd-table tr {
   border-top: 1px solid #ddd;
@@ -93,6 +93,7 @@ h1 {
 }
 @media (min-width: 480px) {
   .rwd-table {
+    margin-top: 10%;
     width: 90%;
     padding: 1em;
     font-size: 12px;

@@ -16,6 +16,7 @@ echo "
     <head>
         <meta charset='UTF-8'>
         <title>Libros</title>
+        <script src='../../Assets/JS/script.js'></script>
         <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
         <link rel='stylesheet' href='../../Assets/Css/style_index.css'>
@@ -32,25 +33,25 @@ echo "
             </div>
             <div class='container-nav'>
                 <div class='nav'>
-                        <a href = '../../controllers/Index_adminController.php?accion=Perfil'>
+                        <a href = '../../controllers/UsuarioController.php?accion=Perfil'>
                             <img src='../../Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Perfil</p> 
                         </a>
                 </div>
                     <div class='nav'>
-                        <a href = '../../controllers/Index_adminController.php?accion=index_admin'>
+                        <a href = '../../controllers/UsuarioController.php?accion=Index'>
                             <img src='../../Assets/Images/Botones/libro.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Libros</p> 
                         </a>
                     </div>
                 <div class='nav'>
-                        <a href = '../../controllers/Index_adminController?accion=registrar_libro'>
+                        <a href = '../../controllers/LibroController.php?accion=registrar_libro'>
                             <img src='../../Assets/Images/Botones/prestamo.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Registrar libros</p> 
                         </a>
                 </div>
             </div>
-            <div class='logout2'><a href = '../../controllers/LoginController?accion=Logout'><button><img src='../../Assets/Images/Botones/salir.png' ></button></a></div>
+            <div class='logout2'><a href = '../../controllers/UsuarioController.php?accion=Logout'><button><img src='../../Assets/Images/Botones/salir.png' ></button></a></div>
         </div>
     </div>
     <div class='welcome'>
@@ -76,12 +77,15 @@ foreach ($result as $row_libro) {
                     <p class='descripcion'>Descripcion: " . $row_libro->descripcion . "</p><br><br>
                     <p class='descripcion'> Autor: " . $row_libro->nombre_autor . "</p>
                     <p class='descripcion'>Stock: " . $row_libro->stock . "</p>
-                </form>
+                </form> 
                 
-                <form action='../../controllers/Index_adminController.php' method='POST' style='display: inline-block; margin-right: 15px; margin-left: 15px;'>
+                <form id='eliminarForm' action='../../controllers/LibroController.php' method='POST' style='display: inline-block; margin-right: 15px; margin-left: 15px;'>
                     <input type='hidden' name='id_libro' value='" . $row_libro->id_libro . "'>
-                    <button class='prestar' title='Eliminar' type='submit' value='Eliminar' name='accion'> <img src='../../Assets/Images/iconos/eliminar.png'></button>
-                    <button class='prestar' title='Editar' type='submit' value='Editar' name='accion'><img src='../../Assets/Images/iconos/editar.png' ></button>
+                    <button class='libroCrud' title='Eliminar' type='submit' value='Eliminar' name='accion' onclick='return confirmAction()'> <img src='../../Assets/Images/iconos/eliminar.png'></button>
+                    <button class='libroCrud' title='Editar' type='submit' value='Editar' name='accion'><img src='../../Assets/Images/iconos/editar.png' ></button>
+                </form>
+                <form action='../../controllers/PrestamoController.php' method='POST' style='display: inline-block; margin-right: 15px; margin-left: 15px;'>
+                    <input type='hidden' name='id_libro' value='" . $row_libro->id_libro . "'>
                     <button class='prestar' title='Generar prestamo' type='submit' value='Solicitar_prestamo' name='accion'><img src='../../Assets/Images/iconos/generar_prestamo.png'></button>
                     <button class='prestar' title='Generar entrega' type='submit' value='lista_prestamos' name='accion'><img src='../../Assets/Images/iconos/prestamos_libros.png'></button>
                 </form>
@@ -90,3 +94,94 @@ foreach ($result as $row_libro) {
 echo "</div>
         </body>
     </html>";
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<script>
+    function confirmAction() {
+        return confirm("¿Estás seguro de que deseas eliminar este libro?");
+    }
+</script>
+</html>
+
+    

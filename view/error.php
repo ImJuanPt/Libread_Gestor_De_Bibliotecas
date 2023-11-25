@@ -23,7 +23,7 @@ $msj = @$_REQUEST["msj"];
                 </div>
                <a href="index.html"><img src="../Assets/Images/Logo/image-removebg-preview.png" alt=""></a> 
             </div>
-            <form action="../controllers/LoginController.php" method="post">
+            <form action="../controllers/UsuarioController.php" method="post">
                 <div class="container-form">
                     <div class="register_camp">
                         <p><?= $msj ?></p>

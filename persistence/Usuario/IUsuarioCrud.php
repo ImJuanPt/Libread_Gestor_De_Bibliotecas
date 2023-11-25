@@ -7,4 +7,5 @@ interface IUsuarioCrud
     public static function deleteUser($cedula);
     public static function login($cedula, $clave);
     public static function addPrestamoUser($user);
+    public static function saveUser($user);
 }

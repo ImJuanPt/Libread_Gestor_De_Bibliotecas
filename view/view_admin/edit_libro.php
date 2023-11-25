@@ -10,7 +10,7 @@ if(isset($_REQUEST["id_libro"])){
     $autor = service_Autor::findAutor($book->id_autor);
 }
 verificacion_sesion_controller::redic_valid_login();
-$result = servicio_admin::list_books();
+$result = service_Libro::list_books();
 
 echo "
     <!DOCTYPE html>
@@ -36,31 +36,31 @@ echo "
                 </div>
                 <div class='container-nav'>
                     <div class='nav'>
-                            <a href = '../../controllers/Index_adminController.php?accion=Perfil'>
+                            <a href = '../../controllers/UsuarioController.php?accion=Perfil'>
                                 <img src='../../Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                                 <p>Perfil</p> 
                             </a>
                     </div>
                         <div class='nav'>
-                            <a href = '../../controllers/Index_adminController.php?accion=index_admin'>
+                            <a href = '../../controllers/UsuarioController.php?accion=Index'>
                                 <img src='../../Assets/Images/Botones/libro.png' style = 'margin: auto;margin-left: 55%;'>
                                 <p>Libros</p> 
                             </a>
                         </div>
                     <div class='nav'>
-                            <a href = '../../controllers/Index_adminController?accion=registrar_libro'>
+                            <a href = '../../controllers/LibroController.php?accion=registrar_libro'>
                                 <img src='../../Assets/Images/Botones/prestamo.png' style = 'margin: auto;margin-left: 55%;'>
                                 <p>Registrar libros</p> 
                             </a>
                     </div>
                 </div>
-                <div class='logout2'><a href = '../../controllers/LoginController?accion=Logout'>
+                <div class='logout2'><a href = '../../controllers/UsuarioController.php?accion=Logout'>
                     <button><img src='../../Assets/Images/Botones/salir.png' ></button></a></div>
                 </div>
             </div>
             <div class='contenedor'>
                 <div class='libro_content_insert' id = 'datos'>
-                    <form action='../../controllers/Index_adminController.php' method='post' enctype='multipart/form-data'>
+                    <form action='../../controllers/LibroController.php' method='post' enctype='multipart/form-data'>
                         <input type='hidden' name='id_libro' value='".$book->id_libro."'>
                         <label class='labe' for='nombre'>Nombre</label>
                         <input class='labe' type='text' name='nombre' value = '".$book->nombre."' required>
@@ -72,8 +72,8 @@ echo "
                         <input class='labe' type='number' name='stock' value = '".$book->stock."' required><br>
                         <label class='checkbx'>Seleccione uno o varios geneross:</label>
                         <div class='contenedor_checkbox'>";
-                                $generos_libro = servicio_admin::list_gender_on_book($book->id_libro); // array para almacenar los nombres de los géneros que tiene el libro
-                                $result_generos = servicio_admin::list_gender();
+                                $generos_libro = service_Genero::list_gender_on_book($book->id_libro); // array para almacenar los nombres de los géneros que tiene el libro
+                                $result_generos = service_Genero::list_gender();
                                 $i = 0;
                                 foreach ($result_generos as $row_generos) {
                                     if ($i % 5 == 0) {

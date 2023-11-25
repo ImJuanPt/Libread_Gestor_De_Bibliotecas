@@ -23,11 +23,11 @@ class service_Usuario
                     throw new Exception($user);
                 }
             } else {
-                throw new Exception("Hubo un error, la cedula que intenta ingresar ya se encuentra registrada, intente Iniciar Sesion");
+                throw new Exception("La cedula que intenta ingresar ya se encuentra registrada, intente Iniciar Sesion");
             }
         } catch (Exception $error) {
             $array_respuesta[1] = false;
-            $array_respuesta[2] = "Hubo un error al intentar registrar el usuario: " . $error->getMessage();
+            $array_respuesta[2] = $error->getMessage();
             $_SESSION["register.respuesta"] = serialize($array_respuesta);
         }
     }
@@ -95,6 +95,9 @@ class service_Usuario
         $_SESSION["usuario.login"] = null;
     }
 
+    public static function saveUser($user){
+        return UsuarioCrud::saveUser($user);
+    }
     public static function findUser($id_usuario)
     {
         return UsuarioCrud::findUser($id_usuario);

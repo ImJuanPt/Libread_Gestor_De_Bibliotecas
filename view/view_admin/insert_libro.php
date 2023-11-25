@@ -1,13 +1,14 @@
 <?php
 session_start();
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Genero.php";
+
 
 verificacion_sesion_controller::redic_valid_login();
 $u = unserialize($_SESSION["usuario.login"]);
-if(isset($_REQUEST["msj"])){
+if (isset($_REQUEST["msj"])) {
     $msj = $_REQUEST["msj"];
-    echo '<script>alert("'.$msj.'");</script>';
+    echo '<script>alert("' . $msj . '");</script>';
 }
 
 echo "
@@ -28,37 +29,38 @@ echo "
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
         <meta http-equiv='Cache-Control' content='no-cache, must-revalidate'>
     </head>
-        <body>
+    <body>
         <div class='content'>
             <div class='logo'>
                 <img src='../../assets/Images/Logo/image-removebg-preview.png'>
             </div>
             <div class='container-nav'>
                 <div class='nav'>
-                        <a href = '../../controllers/Index_adminController.php?accion=Perfil'>
+                        <a href = '../../controllers/UsuarioController.php?accion=Perfil'>
                             <img src='../../Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Perfil</p> 
                         </a>
                 </div>
                     <div class='nav'>
-                        <a href = '../../controllers/Index_adminController.php?accion=index_admin'>
+                        <a href = '../../controllers/UsuarioController.php?accion=Index'>
                             <img src='../../Assets/Images/Botones/libro.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Libros</p> 
                         </a>
                     </div>
                 <div class='nav'>
-                        <a href = '../../controllers/LoginController?accion=registrar_libro'>
+                        <a href = '../../controllers/LibroController.php?accion=registrar_libro'>
                             <img src='../../Assets/Images/Botones/prestamo.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Registrar libros</p> 
                         </a>
                 </div>
             </div>
-            <div class='logout2'><a href = '../../controllers/LoginController?accion=Logout'><button><img src='../../Assets/Images/Botones/salir.png' ></button></a></div>
+            <div class='logout2'><a href = '../../controllers/UsuarioController.php?accion=Logout'><button><img src='../../Assets/Images/Botones/salir.png' ></button></a>
+            </div>
         </div>
     </div>
             <div class='contenedor'>";
-             echo "<div class='libro_content_insert' id = 'datos'>
-             <form action='../../controllers/index_adminController.php' method='post' enctype='multipart/form-data'>
+echo "<div class='libro_content_insert' id = 'datos'>
+             <form action='../../controllers/LibroController.php' method='post' enctype='multipart/form-data'>
              <label class='labe' for='nombre'>Nombre</label>
              <input class='labe' type='text' name='nombre' required>
              <label class='labe' for='desc'>Descripcion</label>
@@ -69,19 +71,19 @@ echo "
              <input class='labe' type='number' name='stock' required><br>
              <label class='checkbx'>Seleccione uno o varios generos:</label>
              <div class='contenedor_checkbox'>";
-                 $i = 0;
-                 $generos = servicio_admin::list_gender();
-                 foreach ($generos as $row) {
-                   if ($i % 5 == 0) {
-                     echo "<div class='columna_chck'>";
-                   }
-                   echo "<div><label style = 'cursor: pointer'><input class='checkbox' type='checkbox' name='generos[]' value='".$row->id_genero."'>".$row->nombre_genero."</label></div>";
-                   $i++;
-                   if ($i % 5 == 0) {
-                     echo '</div>';
-                   }
-                 }
-     echo"    </div>
+                $i = 0;
+                $generos = service_Genero::list_gender();
+                foreach ($generos as $row) {
+                    if ($i % 5 == 0) {
+                        echo "<div class='columna_chck'>";
+                    }
+                    echo "<div><label style = 'cursor: pointer'><input class='checkbox' type='checkbox' name='generos[]' value='" . $row->id_genero . "'>" . $row->nombre_genero . "</label></div>";
+                    $i++;
+                    if ($i % 5 == 0) {
+                        echo '</div>';
+                    }
+                }
+echo "    </div>
      </div>
              <label class='labe' for='nombre'>Portada</label>
              <img class='imagen_register' id='vista-previa' src='#' alt='Vista previa de imagen' style='display: none; width: 112px; margin-rigth: 100%;'><br>
@@ -91,7 +93,7 @@ echo "
              </button>
          </form>
                     </div>";
-      echo "</div>
+echo "</div>
         </body>
 </html>
 ";

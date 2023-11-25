@@ -30,25 +30,25 @@ echo "
             </div>
             <div class='container-nav'>
                 <div class='nav'>
-                        <a href = '../../controllers/Index_adminController.php?accion=Perfil'>
+                        <a href = '../../controllers/UsuarioController.php?accion=Perfil'>
                             <img src='../../Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Perfil</p> 
                         </a>
                 </div>
                     <div class='nav'>
-                        <a href = '../../controllers/Index_adminController.php?accion=index_admin'>
+                        <a href = '../../controllers/UsuarioController.php?accion=Index'>
                             <img src='../../Assets/Images/Botones/libro.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Libros</p> 
                         </a>
                     </div>
                 <div class='nav'>
-                            <a href = '../../controllers/Index_adminController?accion=registrar_libro'>
+                            <a href = '../../controllers/LibroController.php?accion=registrar_libro'>
                             <img src='../../Assets/Images/Botones/prestamo.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Registrar libros</p> 
                         </a>
                 </div>
             </div>
-            <div class='logout2'><a href = '../../controllers/LoginController?accion=Logout'><button><img src='../../Assets/Images/Botones/salir.png' ></button></a></div>
+            <div class='logout2'><a href = '../../controllers/UsuarioController.php?accion=Logout'><button><img src='../../Assets/Images/Botones/salir.png' ></button></a></div>
         </div>
     </div>
     
@@ -68,7 +68,7 @@ echo "
         </button>
                 
         <div class='user_info' >
-            <form action='../../controllers/profile_editController.php' method='post'>
+            <form action='../../controllers/UsuarioController.php' method='post'>
                 <p class='puntos' id ='user_info_edit'>". $u->puntaje."</p> 
                 <p class='nombre' id='user_info_edit'>". $u->nombre."</p>
                 <p class='apellido' id='user_info_edit'>". $u->apellido_1."</p>
@@ -76,7 +76,7 @@ echo "
                 <p class='cedula' id='user_info_edit'>". $u->cedula."</p>
                 <p class='correo' id='user_info_edit'>". $u->correo."</p><br>
                 <p id='contraseña' >". $u->passw."</p>
-                <button value = 'profile' name = 'accion' type = 'submit' class=editar;> <img class='editar2' src='../../Assets/Images/Botones/lapiz-de-usuario.png'></button>
+                <button value = 'Perfil_edit' name = 'accion' type = 'submit' class=editar;> <img class='editar2' src='../../Assets/Images/Botones/lapiz-de-usuario.png'></button>
             </form>
         </div>
     </div>

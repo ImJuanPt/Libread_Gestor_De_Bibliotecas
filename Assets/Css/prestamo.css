@@ -1,0 +1,16 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
+body{
+    margin:0;
+    padding: 0;
+}
+
+.tabla_contenedor{
+    overflow-y: auto;
+    max-height: 100%;
+    position: absolute;
+    margin-left: 30%;
+    top: 0;
+}
+

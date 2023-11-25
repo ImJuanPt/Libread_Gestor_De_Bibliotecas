@@ -1,37 +1,47 @@
 @startuml
 class Anuncio{
-    - id_anuncio:INT
+    - id_anuncio:Int
     - libro:Libro
-    - tipo_anuncio:STRING
-    - descripcion:STRING
+    - tipo_anuncio:String
+    - descripcion:String
 }
 class Prestamo{
-    - id_prestamo:INT
+    - id_prestamo:Int
     - libro:Libro
-    - cc_usuario:INT
-    - fecha_prestamo:DATE
-    - fecha_max_devolucion:DATE
-    - estado_prestamo:STRING
-    - fecha_entrega:DATE
+    - cc_usuario:Int
+    - fecha_prestamo:Date
+    - fecha_max_devolucion:Date
+    - estado_prestamo:String
+    - fecha_entrega:Date
 }
 
 class Libro{
-    - id_libro:INT
-    - nombre:STRING
-    - descripcion:STRING
-    - stock:INT
-    - prestamos_activos:INT
-    - fecha_publicacion:DATE
-    - id_autor:INT
-    - img_portada:STRING
-    - estado_libro:STRING
+    - id_libro:Int
+    - nombre:String
+    - descripcion:String
+    - stock:Int
+    - prestamos_activos:Int
+    - fecha_publicacion:Date
+    - id_autor:Int
+    - img_portada:String
+    - estado_libro:String
+}
+
+class Libros_genero{
+    - id:Int
+    - libro:Libro
+    - genero:Genero
+}
+class Genero{
+    - id_genero
+    - nombre_genero
 }
 
 class Usuario{
-    - cedula:INT
-    - nombre:STRING
-    - apellido_1:STRING
-    - apellido_2:STRING
+    - cedula:Int
+    - nombre:String
+    - apellido_1:String
+    - apellido_2:String
     - passw:String
     - correo:String
     - prestamos_activos:Int
@@ -43,6 +53,8 @@ class Usuario{
 
 Anuncio "*"--"1" Libro : contener
 Usuario "*"--"*" Libro : solicitar
+Libro "1"--"*" Libros_genero : tiene
+Genero "1"--"*" Libros_genero : tiene
 (Usuario, Libro) .. Prestamo
 
 

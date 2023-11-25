@@ -26,7 +26,7 @@ verificacion_sesion_controller::redic_valid_login();
                 </div>
                <a href="index.html"><img src="../Assets/Images/Logo/image-removebg-preview.png" alt=""></a> 
             </div>
-            <form action="../controllers/LoginController.php" method="post">
+            <form action="../controllers/UsuarioController.php" method="post">
                 <div class="container-form">
                     <div class="register_camp">
                         <p>Ingrese los siguientes datos</p>

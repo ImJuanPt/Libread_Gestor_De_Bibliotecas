@@ -27,6 +27,10 @@ function confirmarEliminacion(formId) {
     document.getElementById(formId).submit();
   }
 
+  function confirmAction() {
+    return confirm("¿Estás seguro de que deseas eliminar este libro?");
+  }
+
 }
 
 function agregar_ruta(fileId, ruta) {

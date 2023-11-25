@@ -15,4 +15,27 @@ class GeneroCrud implements IGeneroCrud
             return $e->getMessage();
         }
     }
+    public static function list_gender() 
+    {
+        $g = Genero::all();
+        return $g;
+    }
+
+    public static function list_gender_on_book($id_libro)
+    {
+        $list = LibrosGenero::find('all', array(
+            'joins' => array('generos'),
+            'select' => 'libros_generos.*, generos.*',
+            'conditions' => 'id_libro = "' . $id_libro . '"'
+        ));
+        return $list;
+    }
+    public static function gender_book($id)
+    {
+        $row_genero = LibrosGenero::query("SELECT generos.nombre_genero 
+        FROM libros_generos 
+        INNER JOIN generos ON libros_generos.id_genero = generos.id_genero 
+        WHERE libros_generos.id_libro = '$id'");
+        return $row_genero;
+    }
 }

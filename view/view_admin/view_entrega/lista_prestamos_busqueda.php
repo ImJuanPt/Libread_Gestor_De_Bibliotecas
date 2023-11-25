@@ -1,8 +1,8 @@
 <?php
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
-if(isset($_SESSION["lista.prestamos"])){
-    $lista_prestamos = $_SESSION["lista.prestamos"];
+if(isset($_SESSION["lista.prestamos.busqueda"])){
+    $lista_prestamos = $_SESSION["lista.prestamos.busqueda"];
     $lista_prestamos = unserialize($lista_prestamos);
 }else{
     $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/controllers/PrestamoController.php?accion=null";

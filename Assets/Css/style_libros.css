@@ -97,10 +97,26 @@
     top: -110px;
     left: 850px;
 }
+.libro_content .libroCrud {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border: none;
+    top: -110px;
+    left: 850px;
+}
 
+.libro_content .libroCrud img{
+    margin-left: -353px;
+    margin-top: -97px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
 
 .libro_content .prestar img{
-    margin-left: -353px;
+    margin-left: -418px;
     margin-top: -97px;
     width: 30px;
     height: 30px;

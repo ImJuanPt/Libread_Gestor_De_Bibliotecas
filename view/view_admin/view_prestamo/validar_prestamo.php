@@ -1,10 +1,5 @@
 <?php
 session_start();
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Usuario.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Libro.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/service_Prestamo.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
 if (isset($_SESSION["prestamo.libro"]) && isset($_SESSION["prestamo.usuario"])) {
@@ -14,7 +9,7 @@ if (isset($_SESSION["prestamo.libro"]) && isset($_SESSION["prestamo.usuario"])) 
     $usuario = unserialize($usuario);
     $fechas = service_Prestamo::select_dates();
 } else {
-    $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/controllers/Index_adminController.php?accion=null";
+    $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/controllers/PrestamoController.php?accion=null";
     header("Location: $urlBase");
     exit;
 }
@@ -45,25 +40,25 @@ echo "
             </div>
             <div class='container-nav'>
                 <div class='nav'>
-                        <a href = '../../../controllers/Index_adminController.php?accion=Perfil'>
+                        <a href = '../../../controllers/UsuarioController.php?accion=Perfil'>
                             <img src='../../../Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Perfil</p> 
                         </a>
                 </div>
                     <div class='nav'>
-                        <a href = '../../../controllers/Index_adminController.php?accion=index_admin'>
+                        <a href = '../../../controllers/UsuarioController.php?accion=Index'>
                             <img src='../../../Assets/Images/Botones/libro.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Libros</p> 
                         </a>
                     </div>
                 <div class='nav'>
-                        <a href = '../../../controllers/Index_adminController.php?accion=registrar_libro'>
+                        <a href = '../../../controllers/LibroController.php?accion=registrar_libro'>
                             <img src='../../../Assets/Images/Botones/prestamo.png' style = 'margin: auto;margin-left: 55%;'>
                             <p>Registrar libros</p> 
                         </a>
                 </div>
             </div>
-            <div class='logout2'><a href = '../../../controllers/LoginController?accion=Logout'><button><img src='../../../Assets/Images/Botones/salir.png' ></button></a></div>
+            <div class='logout2'><a href = '../../../controllers/UsuarioController.php?accion=Logout'><button><img src='../../../Assets/Images/Botones/salir.png' ></button></a></div>
         </div>
     </div>
 
@@ -75,7 +70,7 @@ if (!isset($_SESSION['sesion.error']) && $fechas!=null) {
     <h4>Usuario solicitante: " . $usuario->nombre . "</h4> <br>
     <h4>Fecha del prestamo: " . $fechas[0] . "</h4><br>
     <h4>Fecha maxima para la entrega del libro: " . $fechas[1] . "</h4><br>
-    <form action='../../../controllers/Index_adminController.php' method='post'>
+    <form action='../../../controllers/PrestamoController.php' method='post'>
        <button type='submit' name = 'accion' value = 'confirmar_prestamo'>Confirmar prestamo</button>
    </form>
        </div>";

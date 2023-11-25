@@ -57,8 +57,9 @@ class LibroCrud implements ILibroCrud
     public static function deleteBook($id_libro)
     {
         try {
-            $lib = LibroCrud::find_book($id_libro);
+            $lib = self::find_book($id_libro);
             $lib->estado_libro = "INACTIVO";
+            
             $lib->save();
             return $lib;
         } catch (Exception $e) {

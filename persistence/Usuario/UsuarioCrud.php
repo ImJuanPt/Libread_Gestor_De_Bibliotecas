@@ -49,6 +49,16 @@ class UsuarioCrud implements IUsuarioCrud
         }
     }
 
+    public static function saveUser($user)
+    {
+        try{
+            $user->save();
+            return $user;
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
+
     public static function deleteUser($cedula)
     {
     }

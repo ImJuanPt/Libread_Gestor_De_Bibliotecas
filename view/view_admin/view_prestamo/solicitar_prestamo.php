@@ -1,16 +1,11 @@
 <?php
 session_start();
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Usuario.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/models/Libro.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_index.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_login.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/services/servicio_admin.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/Libread_Gestor_De_Bibliotecas/controllers/verificacion_sesion_controller.php";
 if(isset($_SESSION["prestamo.libro"])){
     $libro = $_SESSION["prestamo.libro"];
     $libro = unserialize($libro);
 }else{
-    $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/controllers/Index_adminController.php?accion=null";
+    $urlBase = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/Libread_Gestor_De_Bibliotecas/controllers/PrestamoController.php?accion=null";
     header("Location: $urlBase");
     exit;
 }
@@ -41,25 +36,25 @@ echo "
             </div>
                 <div class='container-nav'>
                     <div class='nav'>
-                            <a href = '../../../controllers/Index_adminController.php?accion=Perfil'>
+                            <a href = '../../../controllers/UsuarioController.php?accion=Perfil'>
                                 <img src='../../../Assets/Images/Botones/perfil.png' style = 'margin: auto;margin-left: 55%;'>
                                 <p>Perfil</p> 
                             </a>
                     </div>
                         <div class='nav'>
-                            <a href = '../../../controllers/Index_adminController.php?accion=index_admin'>
+                            <a href = '../../../controllers/UsuarioController.php?accion=Index'>
                                 <img src='../../../Assets/Images/Botones/libro.png' style = 'margin: auto;margin-left: 55%;'>
                                 <p>Libros</p> 
                             </a>
                         </div>
                     <div class='nav'>
-                            <a href = '../../../controllers/Index_adminController.php?accion=registrar_libro'>
+                            <a href = '../../../controllers/LibroController.php?accion=registrar_libro'>
                                 <img src='../../../Assets/Images/Botones/prestamo.png' style = 'margin: auto;margin-left: 55%;'>
                                 <p>Registrar libros</p> 
                             </a>
                     </div>
                 </div>
-                <div class='logout2'><a href = '../../../controllers/LoginController?accion=Logout'>
+                <div class='logout2'><a href = '../../../controllers/UsuarioController.php?accion=Logout'>
                     <button><img src='../../../Assets/Images/Botones/salir.png' ></button></a>
                 </div>
             </div>
@@ -67,7 +62,7 @@ echo "
             <div class='contenedor'>
                 <div class='libro_content_prestamo' id = 'datos'>
                     <h3>Libro solicitado: ". $libro->nombre. "</h3>
-                    <form action='../../../controllers/Index_adminController.php' method='post' enctype='multipart/form-data'>
+                    <form action='../../../controllers/PrestamoController.php' method='post' enctype='multipart/form-data'>
                         <label><h4>Cedula del solicitante</label>
                         <input type='number' name='cedula_solicitante' required></h4>
                         <input type='hidden' name='id_libro' value='".$libro->id_libro."'>
