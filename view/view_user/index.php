@@ -79,22 +79,30 @@ echo "
                     <p class='titulo'>" . $datos[0]['tipo_anuncio'] . "</p>
                     <button class='btn_anuncio' type='submit'><img src='../../Assets/" . $datos[0]['img_portada'] . "' alt=''></button>
                     <p class='descripcion'> " . $datos[0]['descripcion'] . "</p>
+                </form>
             </div>
         </div>
         <div class='notices2'>
             <div class='content_notices'>
                 <div class='noticias'>
+                <form action='desc_libro_user.php' method='POST'>
+                    <input type='hidden' name='id_libro' value='" . $datos[1]['id_libro'] . "'>
+                    
                     <p class='titulo'>" . $datos[1]['tipo_anuncio'] . "</p>
                     <button class='btn_anuncio' type='submit'><img src='../../Assets/" . $datos[1]['img_portada'] . "' alt=''></button>
                     <p class='descripcion'> " . $datos[1]['descripcion'] . "</p>
+                </form>
+                
                 </div>
             </div>
             <div class='notices3'>
                 <div class='content_notices'>
-                    <div class='noticias'>
-                    <p class='titulo'>" . $datos[2]['tipo_anuncio'] . "</p>
-                    <button class='btn_anuncio' type='submit'><img src='../../Assets/" . $datos[2]['img_portada'] . "' alt=''></button>
-                    <p class='descripcion'> " . $datos[2]['descripcion'] . "</p>
+                <form action='desc_libro_user.php' method='POST'>
+                <input type='hidden' name='id_libro' value='" . $datos[2]['id_libro'] . "'>
+                <p class='titulo'>" . $datos[2]['tipo_anuncio'] . "</p>
+                <button class='btn_anuncio' type='submit'><img src='../../Assets/" . $datos[2]['img_portada'] . "' alt=''></button>
+                <p class='descripcion'> " . $datos[2]['descripcion'] . "</p>
+            </form>
                     </div>
                 </div>
             </div>
